@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ships-server-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ships.zagoapps.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ships-server
+                port:
+                  number: 80

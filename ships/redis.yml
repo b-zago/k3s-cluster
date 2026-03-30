@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ships-redis
+  namespace: default
+spec:
+  selector:
+    app: ships-redis
+  ports:
+    - port: 80
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ships-redis
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ships-redis
+  template:
+    metadata:
+      labels:
+        app: ships-redis
+    spec:
+      containers:
+        - name: ships-redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379

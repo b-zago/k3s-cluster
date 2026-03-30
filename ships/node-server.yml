@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ships-server
+  namespace: default
+spec:
+  selector:
+    app: ships-server
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ships-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ships-server
+  template:
+    metadata:
+      labels:
+        app: ships-server
+    spec:
+      containers:
+        - name: ships-server
+          image: zago0/ships-server
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: 6379
+            - name: PROD
+              value: "1"
