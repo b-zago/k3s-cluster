@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: organizer-server
-          image: zago0/organizer-server:1.0
+          image: zago0/organizer-server:1.1
           ports:
             - containerPort: 3000
           envFrom:
