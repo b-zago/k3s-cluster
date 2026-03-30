@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ships.zagoapps.com
+    - host: ships.localhost
       http:
         paths:
           - path: /
