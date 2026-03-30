@@ -7,7 +7,7 @@ spec:
   selector:
     app: ships-redis
   ports:
-    - port: 80
+    - port: 6379
       targetPort: 6379
 ---
 apiVersion: apps/v1
