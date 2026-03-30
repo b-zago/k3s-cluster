@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/tmp/k3d/organizer-data-v5"
+    path: "/mnt/data/organizer-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
