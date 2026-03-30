@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: organizer-server
+  namespace: default
+spec:
+  selector:
+    app: organizer-server
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: organizer-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: organizer-server
+  template:
+    metadata:
+      labels:
+        app: organizer-server
+    spec:
+      containers:
+        - name: organizer-server
+          image: zago0/organizer-server:1.0
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+              name: organizer-secrets
+          env:
+            - name: PORT
+              value: "3000"
+            - name: NODE_ENV
+              value: "production"
+            - name: DB_HOST
+              value: "organizer-db-service"
+            - name: DB_PORT
+              value: "5432"

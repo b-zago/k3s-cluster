@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: organizer-pv-volume
+  labels:
+    type: organizer-local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/organizer-instance"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: organizer-pv-claim
+  labels:
+    type: organizer-local-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      id: organizer-pv-volume
