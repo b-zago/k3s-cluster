@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-provisioner
+spec:
+  selector:
+    app: wp-provisioner
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-provisioner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wp-provisioner
+  template:
+    metadata:
+      labels:
+        app: wp-provisioner
+    spec:
+      serviceAccountName: argocd-provisioner
+      containers:
+        - name: wp-provisioner
+          image: zago0/wp-provisioner-dashboard:1.2
+          imagePullPolicy: Always
+          env:
+            - name: MAX_WORDPRESS_INSTANCES
+              value: "2"
+          ports:
+            - containerPort: 8000
