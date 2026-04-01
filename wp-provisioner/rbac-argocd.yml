@@ -7,7 +7,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: argocd-application-manager
+  name: argocd-wp-manager
   namespace: argocd
 rules:
   - apiGroups: ["argoproj.io"]
@@ -17,7 +17,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: wordpress-api-argocd
+  name: wp-provisioner-argocd-binding
   namespace: argocd
 subjects:
   - kind: ServiceAccount
@@ -26,4 +26,26 @@ subjects:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argocd-application-manager
+  name: argocd-wp-manager
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: namespace-manager
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: wp-provisioner-namespace-manager
+subjects:
+  - kind: ServiceAccount
+    name: wp-provisioner
+    namespace: wp-provisioner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: namespace-manager
