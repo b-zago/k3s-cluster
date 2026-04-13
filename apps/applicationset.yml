@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/b-zago/k3d-infra
         revision: HEAD
         directories:
-          - path: apps/workloads/*/
+          - path: apps/workloads/*
   template:
     metadata:
       name: "{{path.basename}}"
