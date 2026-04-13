@@ -4,6 +4,8 @@ metadata:
   name: workloads
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
         repoURL: https://github.com/b-zago/k3d-infra
@@ -12,7 +14,7 @@ spec:
           - path: apps/workloads/*
   template:
     metadata:
-      name: "{{path.basename}}"
+      name: "{{.path.basename}}"
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.io
@@ -21,13 +23,10 @@ spec:
       source:
         repoURL: https://github.com/b-zago/k3d-infra
         targetRevision: HEAD
-        path: "{{path}}"
+        path: "{{.path.path}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{path.basename}}"
+        namespace: "{{.path.basename}}"
       syncPolicy:
-        # automated:
-        #   prune: true
-        #   selfHeal: true
         syncOptions:
           - CreateNamespace=true
