@@ -22,6 +22,8 @@ spec:
     metadata:
       name: "{{.path.basename}}-{{.env}}"
       namespace: argocd
+      labels:
+        appset: workloads
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
