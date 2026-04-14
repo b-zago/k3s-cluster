@@ -27,9 +27,11 @@ spec:
       labels:
         app: organizer-db
     spec:
+      imagePullSecrets:
+        - name: ghcr-creds
       containers:
         - name: organizer-db
-          image: zago0/organizer-postgres:1.3
+          image: ghcr.io/b-zago/links-organizer/postgres:latest
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
