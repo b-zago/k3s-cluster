@@ -27,7 +27,7 @@ spec:
         - name: ghcr-creds
       containers:
         - name: organizer-server
-          image: ghcr.io/b-zago/links-organizer/server:latest
+          image: {{ .Values.images.server }}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

@@ -31,7 +31,8 @@ spec:
         - name: ghcr-creds
       containers:
         - name: organizer-db
-          image: ghcr.io/b-zago/links-organizer/postgres:latest
+          image: {{ .Values.images.db }}
+          imagePullPolicy: Always
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
