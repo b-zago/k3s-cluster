@@ -23,10 +23,12 @@ spec:
       labels:
         app: wp-provisioner
     spec:
+      imagePullSecrets:
+        - name: ghcr-creds
       serviceAccountName: wp-provisioner
       containers:
         - name: wp-provisioner
-          image: zago0/wp-provisioner-dashboard:1.3
+          image: ghcr.io/b-zago/wp-prov/dashboard:latest
           imagePullPolicy: Always
           env:
             - name: MAX_WORDPRESS_INSTANCES
