@@ -28,7 +28,7 @@ spec:
       serviceAccountName: wp-provisioner
       containers:
         - name: wp-provisioner
-          image: ghcr.io/b-zago/wp-prov/dashboard:latest
+          image: {{ .Values.images.server }}
           imagePullPolicy: Always
           env:
             - name: MAX_WORDPRESS_INSTANCES
