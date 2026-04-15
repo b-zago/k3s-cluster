@@ -27,7 +27,7 @@ spec:
         - name: ghcr-creds
       containers:
         - name: ships-server
-          image: ghcr.io/b-zago/ships/server:latest
+          image: {{ .Values.images.server }}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
