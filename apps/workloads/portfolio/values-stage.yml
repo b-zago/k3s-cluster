@@ -1,0 +1,3 @@
+host: zagoapps.com
+images:
+  server: zago0/portfolio:1.0
