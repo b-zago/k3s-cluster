@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/b-zago/k3d-infra
     targetRevision: HEAD
-    path: apps/cluster-config/
+    path: apps/infra/cluster-config/
   destination:
     server: https://kubernetes.default.svc
     namespace: cluster-config
