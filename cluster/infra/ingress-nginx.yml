@@ -16,6 +16,8 @@ spec:
         controller:
           extraArgs:
             enable-ssl-passthrough: ""
+          service:
+            externalTrafficPolicy: Local
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
