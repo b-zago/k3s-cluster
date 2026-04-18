@@ -11,4 +11,4 @@ services:
       - PERSISTENCE=1
     volumes:
       - ./data:/var/lib/localstack
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock #u gotta do what u gotta do
