@@ -14,10 +14,14 @@ spec:
     helm:
       values: |
         controller:
+          hostNetwork: true
+          hostPort:
+            enabled: true
+          dnsPolicy: ClusterFirstWithHostNet
+          service:
+            type: ClusterIP
           extraArgs:
             enable-ssl-passthrough: ""
-          service:
-            externalTrafficPolicy: Local
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
