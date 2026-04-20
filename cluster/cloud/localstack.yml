@@ -43,6 +43,8 @@ spec:
               value: tcp://localhost:2375
             - name: LAMBDA_DOCKER_NETWORK
               value: bridge
+            - name: LOCALSTACK_HOST
+              value: "172.17.0.1:4566"
           volumeMounts:
             - name: data
               mountPath: /var/lib/localstack
