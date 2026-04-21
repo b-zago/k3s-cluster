@@ -1,7 +1,4 @@
-module "iam_role_lambda_basic" {
-  source = "../modules/iam/lambda_basic"
-}
-
+#check permissions on lambda_core it actually needs a role for s3 + cloudwatch
 module "lambda_authorizer" {
   source = "../modules/lambda"
   lambda_func = {
@@ -9,7 +6,7 @@ module "lambda_authorizer" {
     handler       = "lambda_auth.lambda_handler"
     runtime       = "python3.14"
     source_file   = "./lambda/lambda_auth.py"
-    role          = module.iam_role_lambda_basic.iam_role_arn
+    role          = aws_iam_role.lambda_authorizer_iam_role.arn
   }
 }
 
@@ -20,7 +17,7 @@ module "lambda_core" {
     handler       = "lambda_core.lambda_handler"
     runtime       = "python3.14"
     source_file   = "./lambda/lambda_core.py"
-    role          = module.iam_role_lambda_basic.iam_role_arn
+    role          = aws_iam_role.lambda_core_iam_role.arn
   }
 }
 

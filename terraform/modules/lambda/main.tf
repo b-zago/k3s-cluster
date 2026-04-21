@@ -10,6 +10,5 @@ resource "aws_lambda_function" "this" {
   role          = var.lambda_func.role
   handler       = var.lambda_func.handler
   code_sha256   = data.archive_file.this.output_base64sha256
-
-  runtime = var.lambda_func.runtime
+  runtime       = var.lambda_func.runtime
 }
