@@ -18,16 +18,16 @@ spec:
               revision: HEAD
               directories:
                 - path: cluster/workloads/*
-        selector:
-          matchExpressions:
-            - key: path
-              operator: NotIn
-              values:
-                - cluster/workloads/portfolio
-            - key: env
-              operator: In
-              values:
-                - stage
+      selector:
+        matchExpressions:
+          - key: path.path
+            operator: NotIn
+            values:
+              - cluster/workloads/portfolio
+          - key: env
+            operator: In
+            values:
+              - stage
   template:
     metadata:
       name: "{{.path.basename}}-{{.env}}"
