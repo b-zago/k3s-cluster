@@ -12,3 +12,5 @@ sealedSecrets:
 images:
   server: ghcr.io/b-zago/links-organizer/server:4915849
   db: ghcr.io/b-zago/links-organizer/postgres:latest
+
+# namespace: organizer-stage

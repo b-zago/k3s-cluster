@@ -43,10 +43,10 @@ spec:
         targetRevision: HEAD
         path: "{{.path.path}}"
         helm:
-          valueFiles:
-            - values-{{.env}}.yml
           values: |
             namespace: {{.path.basename}}-{{.env}}
+          valueFiles:
+            - values-{{.env}}.yml
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{.path.basename}}-{{.env}}"
