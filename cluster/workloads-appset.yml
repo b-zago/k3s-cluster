@@ -18,15 +18,6 @@ spec:
               revision: HEAD
               directories:
                 - path: cluster/workloads/portfolio
-    - matrix:
-        generators:
-          - list:
-              elements:
-                - env: stage
-          - git:
-              repoURL: https://github.com/b-zago/k3s-cluster
-              revision: HEAD
-              directories:
                 - path: cluster/workloads/nyanify
     - matrix:
         generators:
