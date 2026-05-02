@@ -37,3 +37,5 @@ spec:
           env:
             - name: REDIS
               value: {{ .Values.name }}-redis
+            - name: DB_HOST
+              value: {{ .Values.name }}-db
