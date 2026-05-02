@@ -25,6 +25,7 @@ spec:
             storageSpec:
               volumeClaimTemplate:
                 spec:
+                  storageClassName: local-reclaim
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
@@ -33,9 +34,12 @@ spec:
         alertmanager:
           alertmanagerSpec:
             persistentVolumeClaimRetentionPolicy:
+              whenDeleted: Retain
+              whenScaled: Retain
             storage:
               volumeClaimTemplate:
                 spec:
+                  storageClassName: local-reclaim
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
