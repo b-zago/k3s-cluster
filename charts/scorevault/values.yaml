@@ -1,0 +1,13 @@
+host: ""
+name: ""
+sealedSecrets:
+  encryptedData:
+    DB_NAME: ""
+    DB_PASSWORD: ""
+    DB_USER: ""
+  encryptedToken:
+    .dockerconfigjson: ""
+images:
+  server: ""
+  redis: ""
+  db: ""

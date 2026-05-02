@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: workloads-prod
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: [ "missingkey=error" ]
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/b-zago/k3s-cluster
+              revision: HEAD
+              files:
+                - path: cluster/workloads/prod/paths.yml
+          - list:
+              elementsYaml: "{{ .key.prod | toJson }}"
+  template:
+    metadata:
+      name: "{{.basename}}-prod"
+      namespace: argocd
+      labels:
+        appset: workloads-prod
+        type: workload
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/b-zago/k3s-cluster
+        targetRevision: HEAD
+        path: "{{.path}}"
+        helm:
+          values: |
+            namespace: {{.basename}}-prod
+          valueFiles:
+            - values-prod.yml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.basename}}-prod"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
