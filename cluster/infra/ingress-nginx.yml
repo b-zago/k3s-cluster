@@ -16,6 +16,12 @@ spec:
         controller:
           extraArgs:
             enable-ssl-passthrough: ""
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+              additionalLabels:
+                release: monitoring
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx

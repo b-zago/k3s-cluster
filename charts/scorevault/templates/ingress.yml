@@ -5,6 +5,11 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* /metrics {
+          deny all;
+          return 403;
+        }
 spec:
   ingressClassName: nginx
   rules:
