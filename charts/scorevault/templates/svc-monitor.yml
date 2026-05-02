@@ -9,4 +9,4 @@ spec:
     matchLabels:
       app: {{ .Values.name }}-server
   endpoints:
-    - port: 80
+    - port: web

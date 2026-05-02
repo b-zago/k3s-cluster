@@ -9,6 +9,7 @@ spec:
     app: {{ .Values.name }}-server
   ports:
     - port: 80
+      name: web
       targetPort: 8000
 ---
 apiVersion: apps/v1
