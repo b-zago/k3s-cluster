@@ -1,6 +1,6 @@
 key:
   stage:
-    - path: cluster/charts/scorevault
-      basename: scorevault
-    - path: cluster/charts/portfolio
-      basename: portfolio
+    - chartPath: cluster/charts/scorevault
+      appName: scorevault
+    - chartPath: cluster/charts/portfolio
+      appName: portfolio

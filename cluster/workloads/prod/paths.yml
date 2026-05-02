@@ -1,12 +1,12 @@
 key:
   prod:
-    - path: cluster/charts/nyanify
-      basename: nyanify
-    - path: cluster/charts/portfolio
-      basename: portfolio
-    - path: cluster/charts/organizer
-      basename: organizer
-    - path: cluster/charts/ships
-      basename: ships
-    - path: cluster/charts/wp-prov
-      basename: wp-prov
+    - chartPath: cluster/charts/nyanify
+      appName: nyanify
+    - chartPath: cluster/charts/portfolio
+      appName: portfolio
+    - chartPath: cluster/charts/organizer
+      appName: organizer
+    - chartPath: cluster/charts/ships
+      appName: ships
+    - chartPath: cluster/charts/wp-prov
+      appName: wp-prov
