@@ -16,10 +16,6 @@ spec:
         controller:
           extraArgs:
             enable-ssl-passthrough: ""
-          service:
-            externalTrafficPolicy: Local
-          config:
-            use-forwarded-headers: "true"
           metrics:
             enabled: true
             serviceMonitor:
