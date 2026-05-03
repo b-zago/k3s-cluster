@@ -42,3 +42,10 @@ spec:
               value: {{ .Values.name }}-redis
             - name: DB_HOST
               value: {{ .Values.name }}-db
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
