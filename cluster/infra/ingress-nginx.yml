@@ -16,6 +16,8 @@ spec:
         controller:
           extraArgs:
             enable-ssl-passthrough: ""
+          service:
+            externalTrafficPolicy: Local
           metrics:
             enabled: true
             serviceMonitor:
