@@ -1,9 +1,9 @@
 {{- define "lib.route" -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
-namespace: traefik
 metadata:
   name: {{ .Values.name }}-{{ .Values.env }}-http
+  namespace: traefik
 spec:
   parentRefs:
     - name: traefik
