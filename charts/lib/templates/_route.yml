@@ -6,7 +6,6 @@ metadata:
 spec:
   parentRefs:
     - name: traefik
-      sectionName: http
       kind: Gateway
   hostnames:
     - {{ .Values.host }}
