@@ -68,17 +68,3 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
----
-
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: grafana-cert
-  namespace: monitoring
-spec:
-  secretName: grafana-tls
-  dnsNames:
-    - grafana.zagoapps.com
-  issuerRef:
-    name: letsencrypt
-    kind: ClusterIssuer
