@@ -1,31 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik
+  name: ingress-nginx
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://traefik.github.io/charts
-    chart: traefik
-    targetRevision: v39.0.9
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.15.1
     helm:
       values: |
-        api:
-          dashboard: false
-        providers:
-          kubernetesGateway:
+        controller:
+          extraArgs:
+            enable-ssl-passthrough: ""
+          metrics:
             enabled: true
-        gateway:
-          enabled: false
-        metrics:
-          prometheus:
-            enabled: true
+            serviceMonitor:
+              enabled: true
+              additionalLabels:
+                release: monitoring
   destination:
     server: https://kubernetes.default.svc
-    namespace: traefik
+    namespace: ingress-nginx
   syncPolicy:
     automated:
       prune: true

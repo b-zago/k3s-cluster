@@ -1,8 +1,4 @@
 host: ""
-name: ""
-sealedSecrets:
-  encryptedData:
-    .dockerconfigjson: ""
 images:
   server: ""
 namespace: ""

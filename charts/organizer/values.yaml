@@ -1,17 +1,7 @@
 host: ""
-name: ""
 persistence:
   storageClass: "" # empty => manual hostPath PV; set => dynamic PVC via this SC
   hostPath: ""
 sealedSecrets:
-  encryptedData:
-    DB_NAME: ""
-    DB_PASSWORD: ""
-    DB_USER: ""
-    JWT_SECRET: ""
-  encryptedToken:
-    .dockerconfigjson: ""
-images:
-  server: ""
-  db: ""
+  encryptedData: {}
 namespace: ""

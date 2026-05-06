@@ -11,4 +11,3 @@ images:
   server: ""
   redis: ""
   db: ""
-namespace: ""
