@@ -1,6 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ .Values.name }}-{{ .Values.env }}-service-external
+  namespace: traefik
+spec:
+  type: ExternalName
+  externalName: nyanify-server.{{ .Values.name }}-{{ .Values.env }}
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: nyanify-server
 spec:
   selector:
