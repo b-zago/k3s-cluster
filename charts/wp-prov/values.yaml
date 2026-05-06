@@ -1,3 +1,9 @@
 host: ""
+name: ""
 env: ""
+sealedSecrets:
+  encryptedData:
+    .dockerconfigjson: ""
+images:
+  server: ""
 namespace: ""

@@ -1,10 +1,11 @@
 host: ""
-namespace: ""
+name: ""
 sealedSecrets:
   encryptedData:
     HMAC_KEY: ""
     TOKEN: ""
   encryptedToken:
-    .dockerconfigjson:
+    .dockerconfigjson: ""
 images:
   server: ""
+namespace: ""

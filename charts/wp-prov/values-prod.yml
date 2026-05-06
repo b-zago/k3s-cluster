@@ -1,4 +1,5 @@
 host: wp-prov.zagoapps.com
+name: wp-prov
 env: prod
 sealedSecrets:
   encryptedData:
