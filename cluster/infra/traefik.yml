@@ -19,7 +19,22 @@ spec:
           kubernetesGateway:
             enabled: true
         gateway:
-          enabled: false
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt
+          listeners:
+            - name: websecure
+              hostname: "*.zagoapps.com"
+              port: 8443
+              protocol: HTTPS
+              certificateRefs:
+                - name: zagoapps-com-tls
+            - name: websecure-apex
+              hostname: "zagoapps.com"
+              port: 8443
+              protocol: HTTPS
+              certificateRefs:
+                - name: zagoapps-com-apex-tls
         metrics:
           prometheus:
             enabled: true
