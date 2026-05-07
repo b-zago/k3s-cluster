@@ -1,4 +1,5 @@
 host: organizer-stage.zagoapps.com
+name: organizer
 persistence:
   storageClass: local-path
 sealedSecrets:

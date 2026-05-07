@@ -50,16 +50,15 @@ spec:
             passwordKey: admin-password
           ingress:
             enabled: true
-            ingressClassName: nginx
+            ingressClassName: traefik
             annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
-              nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+              cert-manager.io/cluster-issuer: letsencrypt
             hosts:
               - grafana.zagoapps.com
             tls:
               - hosts:
                   - grafana.zagoapps.com
-                secretName: grafana-general-tls
+                secretName: grafana-tls
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

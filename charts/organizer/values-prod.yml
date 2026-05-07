@@ -1,4 +1,5 @@
 host: organizer.zagoapps.com
+name: organizer
 persistence:
   hostPath: /mnt/data/organizer-prod
 sealedSecrets:
