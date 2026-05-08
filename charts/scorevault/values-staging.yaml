@@ -14,20 +14,20 @@ services:
     runsOn: redis
     port: 6379
     targetPort: 6379
-  - name: databaseService
+  - name: database-service
     runsOn: database
     port: 5432
     targetPort: 5432
 
 secrets:
-  - name: databaseEnvs
+  - name: database-envs
     runsOnList:
       - web-server
       - database
     data:
-      POSTGRES_DB: AgAJ/tjMsRr2CvBW7ebm75MxeORqTmTtAPVFn7g3Z2YiQkIoTGWGA7414rQpEVDaLSu1TjoYfRVe6d1wIL1THTzBYxdwtOK6msbl+Esp63oJxHpdRuJGRpTxivjsvW9CYD7QUblI5aOTCBjeQX8MKhKvurvfQGEVgXpRNe85ZLcqJ47mHpOyGbU5R6RcqM0RqXSoRt5zW2BCC36pfixpNpAS2h5s6kajKdllsBkDTiQogvt6cFS5Y2SIFuGTbbuPszbYyDcR6kQ27uOmHJHmtd7gbB+7Oz1Ki+05Nt1WR41UMxtwsp7PnSJL3r65CdL9/OQvFNNT9wLKE0YvGq2BnHmmMWuuxM4q3XwTLvtRMJUILp70sJ0WPppkk4RwbgiFR9v0FxaAcJ0LXSenuRU8KS9/K8UXZ1MEYCI9xQqNPT8MvNXBdwUbN9X6CV/LFYQubSLrB3Ti9JHQXiGcNDSNlzSsZ0PiS6oxk+hXXGhUO4AhW7qrpm705hlmSC3BB+SXbDYp8cMHfKNFZhV1thfhQMfPtHf72a2Nu1jtiUtFBuqFGc6DIhx1PdIaIJPVBBsC0Lkr34pNENk2zatRuFc5ZqjOFrOZShG8YVLiY+SKnYTmFqNBFSnDV1q1zcwV8GB9wJ4asCmbk1vGPZcTVX7LUskt/9DJA1StrWcJyh9ZyQeTCbkjh8aXT+Cb6NBzmHARco8DrHa3cKLq0F3b
-      POSTGRES_PASSWORD: AgAN5P3+e4pcyyNMsR8YCd4slu/Y8pWD2ywEhCrHcq0jyNcUT7grspzjt7Y00GbimG/0jQAptEAue+MtaqaYH/u+ZhrFxfUfY/QBVfxRkzm5m+hq7C+rRq2oaiCZpykxbsFuxVbAHyWaHBIQE5zz9JO4/qWUe5FLLNsWjqBLdRV/eYL2C93bc6q/F92idQNOB8O7UI0MpScm5z+las8ze5XLCsrOtNbOlQ+fbCRmCBLu/UcDeQ6gu+qWcxBon1bdwRFuQwgru9xdF8fwFcAwyZws6NYRhempgQSe/Q0N3CJe8gkSuk5wMbLg/ZHQJ+PsZaUpPx+ZncJ/JzUwBBj0wWyOGkR2DNr3fDzrl8JHmg8znvhxM49IDRh2jXG21/l6z3aNWJpEFnm8GqIlCUmmRvgHdB3GeaPIaXvDAaThs4jHWn8m1yI/60nnNC4XzD9zyw6YoZzhm29ckqs/q/Rl8fQm+QdR2FotTCG8/JL6ZWNfMM3WChxFogCzy5A5qAJGQwPmmWSTNmJfIpuf9nT8wR6isK/8oRt6AI2DUWZH3e5mXL97XR6nHjI134SLmNSAob0l01Mj1HJi39YFe0mTfL5OjhU+0XQAnZ2dHbYDaEfCTpKIXbMhGExqXdSY7dQWx9IyDRUMx6FcTGJ2IZumKANal0p87/OIVQ6zYbrJuzbtuDrVA9T7KUy1nN7OcIg8AUonZkkkj1K1aHAg2A==
-      POSTGRES_USER: AgBUy+VWTYIg1ds8mNqyvcBcC9gwA88B1y/EdlFGDcTdS0OWSg727Z2Fc1hwe1vEfw3ph1Dj1mv0xhWjjJwdNmokiBEQkUGUaTmLDBFcfvoQomoqvJE6QzcPNtLnedEj9fPugTUgEXMUQJwKWtvEaexpbigQHdMISPUdOKhz0hcsqvi/cxlQ5W2srfBQvkY0w9ZQgeP+rQEoWSDqCLN7H6aHbqFw+Vv1TqZ7R+xHctjyyrsVWnR2LAlr/YfEi5cxOSfPTvAcGWfQxhS39oGTvQmP0IcLV37KrrXN2GW7g4nTwcecQC8MbFpglgD2t+UCvWFqj2K4n9EWQ58ixv6PURuWH2+wM5Bxm+KEJQ4qrYyResylMyJzvfbko7GeRb1r5O0/z3cjo7lPdtPR2vPDak8zBVY7WSqpi/kGX9IgJl3mEupunqRn+5MkWTf1ZPeHLsjDAWFs4K5zkNIpw4EWklOJplA3ZKc62qn9TcNrFsJ5OEYYQCY8xa4HyrnkqAVbThYLd2P294ZBaC2RtQGcAmc6rJ1IEVHR1sdkBOC9ovNZ2T5COzOs5jx/Dh6tDX0DKABvJcdcRI5LXbIQyTiTN9LyQrgzETqt6AhweTOXvwjc3BAvRkpxsfmaASdS4Dt7r7PVTJxQa/sT/jLKN+OUEpmAVdAVAtpv3A8QoBsgePLo4LicHqK4c4b4s4Eu68/oAKnxLUUPWUJD
+      POSTGRES_DB: AgA4kzOzaCZGkxuuotlJVoMnrMKdul3mxwVUf2X6uYTd/7eA5fh7msFLngBKrgSS2b2rexICdw6Yb2XzoLsfiGVks8ogCN9G9gfURs+/20WDnKgtRkZKDo4q2LidgtwgJi4VvXcZSnW2/MRE471/+kWS1hFyb+IAtRSwuQuQuH/EkG77n6jkU2uiR7AWMxA+kK9olFC9B/sCLnar8dXjAGjb6uO/Gm+SxA5M2QpY+uF5Ss8VbN2gqFqytBMvuHSl5mM9O0HC7c3cXStPhJ++bCDjJGLNlCtmGPE9L0gl1sommugDlteD3uVlFEy3YKv0CtlXSxwWC8rn80BQOiSvpzovDxfVmXTRTODcTdhGM+U4fwXLnxQN/FOYpIOhOdwLFm8KgVJKkFCkYFws9OieedaW7RqnvJ1LfAh49C0EvuJgeIYgc9n3nYkUpQVA8AHeNzPHE/xzNXazNVO0wcnv4bJjXDPOAfWmW2lpggQGmMbg5KlcfalZPJ5kZxPKVPg4A7fv2mC9roF2Fc8IsCJicfIGJhvINQZK3T8v0FUVv7vccXqOVwHfgkKuvUFQwGxYCi3fsKL6GIgE+pPyQZNZFY7yG+xlvvgfaKBraV1HzAy5gq8+7DCL/28FzanXFyruEKLtL/ZawMqAW/IzJqTmyNJNrCZwYmKu5J8pdwVQCvHHhmkfoV3AQjJz3YEKpSf6VxdJ37CIfO7LXaFk
+      POSTGRES_PASSWORD: AgBVfIO6Zxs2ndzH6DYTVxeACWXoYQrmR1gN4rGzElheuSqH0//N9FgBN/YS99ZVnxQrdSIdwgWoG3zB+xiPrMAUVxqqeKVr+aefDoXO9gcEBBgQpeIUTg+Ue/3954N3F2DTDBVS6WlO0uCMTfriod7QyN3K7Ka9QtCXCAvqB1NCQ1+pCFyvtqmOXrLvVqlNA3qgceUrm1xmty1gopHZdTe5b4LCOdTmF1I6lsk0SxAlRwuKy1CVGcFS2BJ0Mu8y/4gNYKQH9tEjOAviuOiKn+4c6vNBWeaLYQU+RhjWtxAHhzolFb4RkGYPEsGip5RTJfHEJG1WxKosl6ILqycymcXkfA48StIbhadlyaMoidPyOShwpKj7z8qidXEt7oXPHsiRE0cEP3m5Qz7iuI1dJei0RXSawQ0orkIT4i0zj4Ml9nqjRhTUVeT2ws2ftwOzGngE7LIOLs2WcVGXVO9cRdPacr2T1HDQfuzVTit09xbrZSah04QE88M9KvdAGzF+vU5koD7CetyO4EPAKsdXHGNI3L7eGepy1W+yDQTSjKPI7kN9UcnHcg/CDAWHAyiPVFg9MPv/0/l1Npn0e7aXCxP9lnioc/AX9C5cg/1+zjOdmIwzCT3aaErvfAcvWLq0NXwPT59W6AzHpsRgg7aUuIrDKw4va1x/VEFCqU/GLYiFjPf03amqlG7ReQmuneP9XIT0q/eMP2LFXujYHw==
+      POSTGRES_USER: AgA8A2ag5VSQOXKW+LRbn3L+bP0w8aeIVimE5KnYa2eTbMhXvmtBKIm2pOZDRTZRnsBFUYu+DXKF2PokK+E9bvZR9Qw+AfVlymSeoNCMUE+Gl1jjJeYKT+Pyuzp/jy/MtXjW6vsKkgTW4zDwKizs2ERB1Swm0/J95bARZ43oSDaNk+dBnKGdE3Mu5HX+kuTFL4w19zG3yDnEgy9hxW05JiuDupXKHUol1ITLVzzuhqXFAO/SeBkjCxiS+sGlPWcNuDAm/0I7780zidIUaDrxTKy940axGFlnqjJT3gBjGyaWhl2S/yCLQr8lnS0jvMFdlJuKzROs83tKTuifTrAhUjDu/Di2opFBbFfJlGI8T2WznYzHBOrIezBsyWefbQe7gE7HPPDyldc6r/QHtbhrDgtFcXL3VYrvr5g8NES9pmp7W3h2HRufnnQht770PBScIQ9rTOPx74tpkiFXJSAIJ79cL6ot5yBp5GBKbO9/oObZ/IravkJlheF8q8f/JVGV/7y9PyDO/uweHJ7X7uLMyXI20oCdgiwBqpY2GZLicL0z1iFfNaNjpyUvN+FNJ+Q5D8UgiDleU1PwgeNssXYKIGoCiKLYZKCYuATN8ojFzR8Fl1i0KeoyT7QwOukP9pIf4ErfGr1/ZJ5TvVDCLlT9qrVKN1LYlHJ88QCcGcgX3j8nyWU6mrSDaaENt/HpQ3klMJZ/XBWmkFp9
 
 deployments:
   - name: web-server
@@ -37,10 +37,10 @@ deployments:
     component: server
     containerPort: 8000
     envSecretRefs:
-      - databaseEnvs
+      - database-envs
     envVars:
       - name: DB_HOST
-        value: scorevault-databaseService
+        value: scorevault-database-service
       - name: REDIS
         value: scorevault-redisService
   - name: redis
@@ -54,4 +54,4 @@ deployments:
     component: database
     containerPort: 5432
     envSecretRefs:
-      - databaseEnvs
+      - database-envs

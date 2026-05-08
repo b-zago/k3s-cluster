@@ -1,6 +1,3 @@
 {{- include "lib.route" . -}}
----
 {{- include "lib.service" . -}}
----
 {{- include "lib.deployment" . -}}
----
