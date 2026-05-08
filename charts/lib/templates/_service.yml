@@ -11,7 +11,7 @@ metadata:
     part-of: {{ $.Release.Name }}
 spec:
   selector:
-    app: {{ $.Release.Name }}-{{ .runsOn }}
+    instance: {{ $.Release.Name }}-{{ .runsOn }}
   ports:
     - port: {{ .port | default 80 }}
       targetPort: {{ .targetPort }}
