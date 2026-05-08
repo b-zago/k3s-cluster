@@ -4,10 +4,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $appName }}-{{ .name }}Service
+  name: {{ $appName }}-{{ .name }}-service
   labels:
     runs-on: {{ $appName }}-{{ .name }}
-    instance: {{ $appName }}-{{ .name }}Service
+    instance: {{ $appName }}-{{ .name }}-service
     component: service
     part-of: {{ $appName }}
 spec:
@@ -28,7 +28,7 @@ metadata:
     component: {{ .component | default "db"}}
     part-of: {{ $appName }}
 spec:
-  serviceName: {{ $appName }}-{{ .name }}Service
+  serviceName: {{ $appName }}-{{ .name }}-service
   replicas: 1
   selector:
     matchLabels:
