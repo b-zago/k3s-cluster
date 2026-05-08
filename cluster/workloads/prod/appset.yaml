@@ -7,7 +7,7 @@ metadata:
     part-of: prod-app
 spec:
   goTemplate: true
-  goTemplateOptions: [ "missingkey=error" ]
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - matrix:
         generators:
@@ -15,7 +15,7 @@ spec:
               repoURL: https://github.com/b-zago/k3s-cluster
               revision: HEAD
               files:
-                - path: cluster/workloads/prod/paths.yml
+                - path: cluster/workloads/prod/paths.yaml
           - list:
               elementsYaml: "{{ .key.prod | toJson }}"
   template:

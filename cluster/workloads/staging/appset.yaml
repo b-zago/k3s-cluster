@@ -7,7 +7,7 @@ metadata:
     part-of: staging-app
 spec:
   goTemplate: true
-  goTemplateOptions: [ "missingkey=error" ]
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - matrix:
         generators:
@@ -15,7 +15,7 @@ spec:
               repoURL: https://github.com/b-zago/k3s-cluster
               revision: HEAD
               files:
-                - path: cluster/workloads/staging/paths.yml
+                - path: cluster/workloads/staging/paths.yaml
           - list:
               elementsYaml: "{{ .key.staging | toJson }}"
   template:
