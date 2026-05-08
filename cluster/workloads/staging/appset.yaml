@@ -36,7 +36,7 @@ spec:
         helm:
           valueFiles:
             - values.yaml
-            - values-staging.yml
+            - values-staging.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: staging
