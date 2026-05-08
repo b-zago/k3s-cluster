@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $.Release.Name }}-{{ .name }}Svc
+  name: {{ $.Release.Name }}-{{ .name }}Service
   labels:
     runs-on: {{ $.Release.Name }}-{{ .name }}
-    instance: {{ $.Release.Name }}-{{ .name }}Svc
+    instance: {{ $.Release.Name }}-{{ .name }}Service
     component: service
     part-of: {{ $.Release.Name }}
 spec:
@@ -27,7 +27,7 @@ metadata:
     component: {{ .component | default "db"}}
     part-of: {{ $.Release.Name }}
 spec:
-  serviceName: {{ $.Release.Name }}-{{ .name }}Svc
+  serviceName: {{ $.Release.Name }}-{{ .name }}Service
   replicas: 1
   selector:
     matchLabels:
@@ -40,18 +40,20 @@ spec:
         component: {{ .component | default "database"}}
         part-of: {{ $.Release.Name }}
     spec:
-      {{- if $.Values.imagePullSecret }}
+      {{- if .imagePullSecret }}
       imagePullSecrets:
-        - name: {{ $.Values.imagePullSecret }}
+        - name: {{ .imagePullSecret }}
       {{- end }}
       containers:
         - name: {{ $.Release.Name }}-{{ .name }}
           image: {{ .image}}
           imagePullPolicy: Always
-          {{- if .envSecretRef }}
+          {{- if .envSecretRefs }}
           envFrom:
+            {{- range .envSecretRefs }}
             - secretRef:
-                name: {{ $.Release.Name }}-{{ .envSecretRef }}
+                name: {{ $.Release.Name }}-{{ . }}
+            {{- end }}
           {{- end }}
           {{- if .envVars }}
           env:

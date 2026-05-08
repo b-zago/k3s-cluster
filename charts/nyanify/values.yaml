@@ -4,14 +4,14 @@ env: ""
 imagePullSecret: ghcr-creds
 
 services:
-  - name: webServerSvc
+  - name: webServerService
     runsOn: webServer
     port: 80
     targetPort: 8000
 
 routes:
   - name: webServerRoute
-    runsOn: webServerSvc
+    runsOn: webServerService
     host: nyanify.zagoapps.com
 
 secrets:
@@ -29,7 +29,8 @@ deployments:
     runsOn: python
     component: server
     containerPort: 8000
-    envSecretRef: webServerEnvs
+    envSecretRefs:
+      - webServerEnvs
 
 #headless service created automatically here
 statefulSets:

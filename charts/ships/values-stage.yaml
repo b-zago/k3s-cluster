@@ -1,7 +1,38 @@
-host: ships-stage.zagoapps.com
-name: ships
-sealedSecrets:
-  encryptedData:
-    .dockerconfigjson: AgA4JwtPk1yzLFn4kogmG5XjxZ+t+zhWVdLsTRbGdEOD+CdYWqcIaNXmf2N2ADz7T9Bt8xNkNDG1k83DyobqFZI/cLLR2ksnhFjIq+t+Mj2/npMcqcd8lzBekU5QrDbzFmSJuGxZZ4FXrTiRoWT2txFCNcv4qT2ptBoVdloIf1CRRJOy00eZUNys0O5tgKedAWVfiSw1DTWw/dn8+NZmjX42KXzuL6VCOyMDOf6u7VZHCt3a0HasNg2QCxobnz+X64t1xG7uwvaOL8dOSc2CqVrCqAUsZHTOh+kiaioRpFV0Ph9TNQT+C4RvXYA/sXaQuLvDtDl5DOYWPE96MJ3nqsk/eeitvMxRz1NbBMlsPxVOYyGoc+V5qTz3Ce2Yeug8smvFL53TqQTCsrHOCg3qfQ5PSGniRR2Y/7QPNw3WSKPisTvAm+Nv65rbJwFGBxA54MdBHsW8r4h7rbYABecvVeLL/xUoQ1nr3ws08shsTAq+6c0CxPDsDctBT9d7r1HbQH6pniyBkH6kGiswXO2nGM+C8huYMTstlzKQb9n8+ydSoUW0GTvkD1cccFFKKbbvaQFI/hblXnDldm1KemEGedCfOcbGAAq7b0wY9tOuMx8/dwZzNAkN3JEkBYM0mlbisbUrjHktZ5R4vWw2pXrcwMqloeC4sHjSmSaouH/Vb/G8JXFL92W72vIcbURkWCEWIVlOzvTWjWHde88bmXxNRCnPiutUFkDpFkNO7I8Fk5QRyyzOjKaLMEUQt95yS1nMOje500oFdK4uanWv3bhvxVaf6ddG7ksWByPjy3j8hb72RsLjhp6hCYJPne3uja5WvbT8jP0f8bzplixjaAX5avCDChr/RBw+9ObZYXvEehlC931sH8BbXPVetDeixOhweBL5JKrFkRAS8gSGd0C2FjhfwFOwVYjyrLdyFXA=
-images:
-  server: ghcr.io/b-zago/ships/server:latest
+env: "prod"
+
+routes:
+  - name: webServerRoute
+    runsOn: webServerService
+    host: ships-staging.zagoapps.com
+
+services:
+  - name: webServerService
+    runsOn: webServer
+    port: 80
+    targetPort: 3000
+  - name: redisService
+    runsOn: redis
+    port: 6379
+    targetPort: 6379
+
+deployments:
+  - name: webServer
+    image: ghcr.io/b-zago/ships/server:latest
+    imagePullSecret: ghcr-creds
+    runsOn: nodejs
+    component: server
+    containerPort: 3000
+    envVars:
+      - name: PORT
+        value: "3000"
+      - name: REDIS_HOST
+        value: ships-redisService
+      - name: REDIS_PORT
+        value: "6379"
+      - name: PROD
+        value: "1"
+  - name: redis
+    image: redis:8-alpine
+    runsOn: redis
+    component: cache
+    containerPort: 6379

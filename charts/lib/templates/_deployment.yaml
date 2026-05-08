@@ -22,9 +22,9 @@ spec:
         component: {{ .component }}
         part-of: {{ $.Release.Name }}
     spec:
-      {{- if $.Values.imagePullSecret }}
+      {{- if .imagePullSecret }}
       imagePullSecrets:
-        - name: {{ $.Values.imagePullSecret }}
+        - name: {{ .imagePullSecret }}
       {{- end }}
       containers:
         - name: {{ $.Release.Name }}-{{ .name }}
@@ -32,10 +32,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .containerPort }}
-          {{- if .envSecretRef }}
+          {{- if .envSecretRefs }}
           envFrom:
+            {{- range .envSecretRefs }}
             - secretRef:
-                name: {{ $.Release.Name }}-{{ .envSecretRef }}
+                name: {{ $.Release.Name }}-{{ . }}
+            {{- end }}
           {{- end }}
           {{- if .envVars }}
           env:

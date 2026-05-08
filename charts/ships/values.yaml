@@ -1,8 +1,38 @@
-host: ""
-name: ""
-sealedSecrets:
-  encryptedData:
-    .dockerconfigjson: ""
-images:
-  server: ""
-namespace: ""
+env: "prod"
+
+routes:
+  - name: webServerRoute
+    runsOn: webServerService
+    host: ships.zagoapps.com
+
+services:
+  - name: webServerService
+    runsOn: webServer
+    port: 80
+    targetPort: 3000
+  - name: redisService
+    runsOn: redis
+    port: 6379
+    targetPort: 6379
+
+deployments:
+  - name: webServer
+    image: ghcr.io/b-zago/ships/server:latest
+    imagePullSecret: ghcr-creds
+    runsOn: nodejs
+    component: server
+    containerPort: 3000
+    envVars:
+      - name: PORT
+        value: "3000"
+      - name: REDIS_HOST
+        value: ships-redisService
+      - name: REDIS_PORT
+        value: "6379"
+      - name: PROD
+        value: "1"
+  - name: redis
+    image: redis:8-alpine
+    runsOn: redis
+    component: cache
+    containerPort: 6379

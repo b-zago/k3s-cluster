@@ -1,22 +1,20 @@
 env: "staging"
 
-imagePullSecret: ghcr-creds
-
 routes:
   - name: webServerRoute
-    runsOn: webServerSvc
+    runsOn: webServerService
     host: scorevault-stage.zagoapps.com
 
 services:
-  - name: webServerSvc
+  - name: webServerService
     runsOn: webServer
     port: 80
     targetPort: 8000
-  - name: redisSvc
+  - name: redisService
     runsOn: redis
     port: 6379
     targetPort: 6379
-  - name: databaseSvc
+  - name: databaseService
     runsOn: database
     port: 5432
     targetPort: 5432
@@ -34,19 +32,26 @@ secrets:
 deployments:
   - name: webServer
     image: ghcr.io/b-zago/scorevault/webserver:latest
+    imagePullSecret: ghcr-creds
     runsOn: python
     component: server
     containerPort: 8000
-    envSecretRef: webServerEnvs
+    envSecretRefs:
+      - databaseEnvs
+    envVars:
+      - name: DB_HOST
+        value: scorevault-databaseService
+      - name: REDIS
+        value: scorevault-redisService
   - name: redis
     image: redis:8-alpine
     runsOn: redis
     component: cache
     containerPort: 6379
-    envSecretRef: databaseEnvs
   - name: database
     image: postgres:18-alpine
-    runsOn: postgresql
+    runsOn: postgres
     component: database
     containerPort: 5432
-    envSecretRef: databaseEnvs
+    envSecretRefs:
+      - databaseEnvs

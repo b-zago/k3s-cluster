@@ -1,8 +1,20 @@
-host: ""
-name: ""
-sealedSecrets:
-  encryptedData:
-    .dockerconfigjson: ""
-images:
-  server: ""
-namespace: ""
+env: "prod"
+
+routes:
+  - name: webServerRoute
+    runsOn: webServerService
+    host: zagoapps.com
+
+services:
+  - name: webServerService
+    runsOn: webServer
+    port: 80
+    targetPort: 80
+
+deployments:
+  - name: webServer
+    image: ghcr.io/b-zago/portfolio/server:latest
+    imagePullSecret: ghcr-creds
+    runsOn: nginx
+    component: server
+    containerPort: 80

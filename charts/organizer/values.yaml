@@ -1,17 +1,65 @@
-host: ""
-name: ""
-persistence:
-  storageClass: "" # empty => manual hostPath PV; set => dynamic PVC via this SC
-  hostPath: ""
-sealedSecrets:
-  encryptedData:
-    DB_NAME: ""
-    DB_PASSWORD: ""
-    DB_USER: ""
-    JWT_SECRET: ""
-  encryptedToken:
-    .dockerconfigjson: ""
-images:
-  server: ""
-  db: ""
-namespace: ""
+env: "prod"
+
+routes:
+  - name: webServerRoute
+    runsOn: webServerService
+    host: organizer.zagoapps.com
+
+services:
+  - name: webServerService
+    runsOn: webServer
+    port: 80
+    targetPort: 3000
+  - name: databaseService
+    runsOn: database
+    port: 5432
+    targetPort: 5432
+
+secrets:
+  - name: webServerEnvs
+    runsOnList:
+      - webServer
+    data:
+      DB_NAME: AgBq48T9AAkHTopa+++aLyUIww52cr6awmSw5juRJ9Iav4NDXMp+1PxIfF/bkHxX3/1D/Qai4RnjVKwKpYkE3rVX8MqbwLYvhEkukgs2E80K2NoNaQ5oKF1MU9B2zhAFLe4xjGhyyIfFWvMRtFglRpAEhwu+gT2ulzlvk/DqfpmP7RvXHiIk3foeAuWaLMk7A784TOJgchgmt861F0sDqJDZj8qn2PbG9NHeXsyzmIsbRtm5krce1Ho9YqACdlJtK2r7ef6GtbMi3e5Eq9DEvgxoeKC9z2KIy1GmjdqooD40a79/sSV1HgvTqYJnJr+QbE1l1MTQhD3rYJn6qPvVtwLG+6xa6TMnOWBZIwpVxys6Nrrje7ZHIeP0Zcno1APPFjosEO9od80EHG4IWzE3zksOSWn4CGWM3kVy+TVLIZnssImytThFoxYskIuH3nmNEzJ0r9fewYjotyMJEdlO3A7FVfJpB7wQosiNOstvgMxN2PktVf53EMz7NP5vaa8wujp1VoTX5aJqoGE16T9ZAUIyXECilcFJPsZV3wDgPQV6HZCm/XquSHCZio7Z2QoOhNm7n7qeLG5Hc/hzKtRzfwOQoU7jzKIaofntip9yd5flYE1p6hPXEadKvZ/QooaLpu3BaJpWDC1kygiMoAoCIUOIb98Xf9xmuY4ScfJFh3g/aAwxKHBzYkdulx+8ejjxQpT/1lmp/wdnIqo=
+      DB_PASSWORD: AgBqOTECkJidT9R5q5fsa5H0fWoDDqxmsHfmzeZ+DDiSXOZ4slDRhShjFMjBXjWYwLwShhvJPLma1UxE/YoWBMkSaSsH9+0okkWgvy/uZXOy3XefMvHFjbGI96O4mxvSWwZYpAhOhssLWiYjhMZnva2jI2ekSrObhVThji/8ryb4cFm/06Z9SUu8DZ6kz2eKDIxKJva0a3ihqwJ3dZZJSBVboffvwW1DUpCJ1wGIuNXQDtE78wZoJgudFh4zKKxZPOKAX+7npRzYFQeIjykcv77jLivopc86TR4uYHUR0l+HE/xNgtbGWw47zTVCcFssfaSqu+F7zF19XWMMVzhSDZq+yajxbaKfuyshibQJvJh3YOdvJQeA8jDgpZCMzGNgr83sS4V0c+eLQmRwOBYTiDQeN6wcO/rxkBisDpKqbcf1wVeWiGxBGel6uAGK2LCgU/t890ujzEk7HXFv/1squwJes+YSoCFPYv6jjWuGT+JkiEkUUI8GKQjdsdaJACtYPwDYFXdnvcucBmmzSYVKrRLk9N9xEFOsoSuybSv4bGrN8a9eNZn9dLkllCws1uC9gI1yF4oI/lKyJ1IedMetl0e8PxgKsGMn9X6fowiUFCmLNKMxRf2hM1Mo/utY0fQ/uu6xRIcGaVA7DlRpkDjnJUZFNUkgIRuamossDIKfhyI8uVqJDDNG4qF8HwVlLTlGtLYuVVu+c1NaL5qhgWcLxfl/Y6iB1w==
+      DB_USER: AgAW3MjA8UB3u/q491y7RYd/51WcM7cAIdaoJ3IDmqo5z9Tej2eZWv1LZ2Y5qxpdT2AWzYyBYjLlbgdmpjXuw2koWa/iZc6sbtyMcGvMNysSyzlz5kTg/tZ087OZv7W7gcKiIB/dbcCW6UydpNyZv6h9MAIjUQsXZ1uXdQvgimFmAKK4pwzwCUD7xoBVj09xPaXF0NtUM7X3XdTeJoP5bb1YGjxf9stHBUwSf/UV3FS2Z+DJGlWEHyflmoR+EqhwUePLBRbCtsFkCq48Kl8L6STNhBCYjdQGCKC+U8l/kMalqNccYV5h6K0Z8ywcC7N54/RHTK3rzjekxDGHpb/fgtteo901D1ZB39NkTe+4sZFsEgfeO88BGt8NetGNR+6qKZ3wUCZMDU7J8FpV20iG0p8655J3V1xCGBdvuVgdfTjDTBAO+SGS2VuWsyPjCHELWaNbYNqCH11InPUUeRH4kxDr64lwkgy3wSF7p+belWuXvUzlkS8UegFPE45kiCCZqVXno+Rado9fJ8pSC3JiuyHKfp2lEXlFxrMVrYJKcbx3wK3QRRbcJ4fUTNP8raXdXA9pgdUObcRIES1ry+X0Nl51PSb49KgEvc4IpsNjKaXYaIkUfqSH8Sd9lBKdKUEvRWx1IZ4XttAZ6Dv59GbaOs8Lr8M68Hq6PucEKC9nUj3z7AqPXPfKC+0lBnqLrmxEPiYDayHL0R+K
+      JWT_SECRET: AgBSJwHT4icigBO4RQfxpJK2VBVSV8Qgmd4wSlBRPUUe123gKjHmfpPhAhGz/ePssLndGnTr4xAqYqKk2el5vRzleXq9b7eHSscLDEIRonkGmXELwEDQEE7A56j/Ulky27bXZwPzwvHYhBt0/u2WatpVty5Jn70ghN1nYj78qUSMvA1cLLJa5GmdiS6AstYbvGRevXSvHCQKkFicdo0amSHDKzGGCuuTel72qxrSWeifZw36NGHFfdYmzu7jtJKCcz+iq/SQarERMNvf2MceDqCEwhoef5fRm0wjB709sy6y4pYS+LxPmhvPmYwoMcj7NIZ27BjkWfuLc/gt5VGWL7Iaq7Ew8cQmy8BIgH0KoSN+ZSrS+fdZappDybWEaZ1l3r8ZSuGkaDlDwh/VZ11NmtI6Zw2hEzMVbMlJE13xBkWN80IRxGOYEVKIun2R3/eL9+UhVCYh+1yKjhCmZKU/TxMfJwwL/LP3YG/8fknF1ro41YwjC580Pv0upElSLEmKsuOo26mKhiNYIVTGqvXpZSALts1cX791yYqnlNG1jb/bxx5i7iB1Lg63EGQV+/bzyvzID65D5R0Ar18AM3v/VG0GCk5xImqjQhWYrmWqj1LYwxLvnHC9iKPulytu/o9+A4B9qtH48jKO+jvguTQhTj/nK3SWjFK7e/QuJbAfwkJ8+lBKr+/F1lmZU1chU9Do0PTetqOMDF+9nH5iYpDYdjAuSVEFrpTR4WuJhnlHvdRf+0YnVKYPmZF1+OByPA==
+  - name: databaseEnvs
+    runsOnList:
+      - database
+    runsOn: database
+    data:
+      POSTGRES_DB: AgB4IDrgsTIk3uw/X0JEDQmyPaW3ZvPXli+tfwus0Gd8FViyPMhfNfF764d9B3bj5y1eYh4lcaAu82plgxQg1I3cqbqmlR3tTLuGSZscqRWxn52DhXPR+TJufbUPHHymoKoKzCyjMeXzlJ6KrRTS3vWuSY6iRHTpP5reKvYwEzR0FhruqVF8vWFgJt7TZxcgmQq8sWbt9ggFM5GiH8bTeWrPfcc/dRLJG/TjFx9Iwo7HeCrz+LbvRVEcf+zMBTu9Y5bncfdBxSH6rzt43AJ1lT1I0SVJwgKDiVBAmpV7NhhzCB9RUpqotuu64TOeH/MtkB0qQXTgjeuHTKrGfjwNEtfd4Z1x7FBiLCpasYXDqqYU1qt8XOF2865eTkzkeE33KvTFCY5eoUkkwuOG5UV2UPlfXxW6EQPPWYpIRlM61GuplQtQWvLVluvWJ0nFV0tqR2DsERRSXT6mJq33XnuGfFPO+uyoHOpVwGXPZfC9hyKSXe9i2RqtoOya20BeLIkw+yNLGAcdLZFbApHuRRryAeJWUl3EIPWm+2QpT4WFFe4jSkctU2vAJkjv7zlxbxrCAtkhrBM1YoLxdJDJ3uwu3jcmLGOvnXQILleHpFvrD60KQ+7rXtVJ5vNFTIZdUueUSVdOLxhmRQFrhDXnrMyxf7dBSYfiCk4Z87xP6pldR4kdQOkfNTvkxSk3C6lXMJ3cBSliPf8CBDRqvSg=
+      POSTGRES_PASSWORD: AgARuaFiDdDArR+x48Fmz1iK6kbEmxhARW6IzTTRwnBKWSczgoyrZL1KZ18WP6tN5I3cbIcV+N1FIBzfBhx4mjGwUCD28hi0kbNykyL5o/T9qtSAh71fYBFr8G6rd8O0laQePzmwLKSMCiyckMPHxA4QoZLEd6lFj5f8e3Ax+ANmiwfJjNtn72hL3hPvruoU5Z5xOrn5zMU5ZX7W04W10zu4clpI244SyrTZfpUIAXbJIv6Qhs6DQcct49uhnExmMOLg9X6kQrUe9x8k+93xQAXSuqY9dzxpgT6QtzdjGqKtkSbycXvFO/elaefjAkRJpmwqb9rtHaFxvmj5QlzpgXXruIn1lmHvbYlDUiVugxaHAfJTzPGu7iHopTMybpkOQUQll8O3jOYm2FBQLSPee4fmicZ6XQ3Q48brSTmxRltTQveJqDjTbdC1gI/YHpQLe+io8jk2ilVKUR/EE/bFIu4C12dMjkQWkUUULIbz0n5/BQDy3AUkJCd7O1EDvIri1+4FkqKedji7+2GI+bI+wzAGMGOo2aD3jJPWTo/N60d0N6Iz8ZtCgegONfgJtC3wxo+UO7ClA71U1u3vTfQrQwzUCE8J+yqEAv0mSbFfWm1RPbPOG89xRS8QGWTUQwj4f3oeaNSEMHy+gYALOILRmhJN+oGKW6QDzC57mKCj2Ojjx9+hmI80cVaQe6F1jVXWoHpFyXhSs0THX2sg6YyB6f2Au4yaIw==
+      POSTGRES_USER: AgCXY7ksk2cSnoO6ACWlEWZ1JQFwvS6Zn15qS+8ZIblE29a+3lEOgBVUsBPZ1tnLJtUdE6azMqR2WgGg0PbpZux2104+9UsmAigezK38HXGehm+c4UUVIIBxVgVUuHbQnPnibyqCsun2GQrQzME8mmBBqjQvQBscv3qIYIUzGG4u+FUi51nG0hOaF9dvsWwWih8QCAbkBuj9wrT6x1Wprbj2NC8iVBNbmBA8n42iNO3WX7JfQo8Qp7LXJrOgAfyX83fGA4gWWCPzwAoj18eI3ah+bvGzjKUtIKuvD6yIXTHfPU5rEkTtFGbZ5MOd1BH6tjYRmT2Xgq8tsVJIRqFOkS70OUMAdkpBZpo4r/GtrsV1zYEdMQB71WVdNXPG9zp9kr/tMWVgQPjeHM3MZHd7bvQvdTEOpoAiYxsndmhKyr28DKh2Wy5sXOOiFOKR0pC5MLiQRR0AvW3R4Duh7taDr3GOhViBPfEoPSY9UHdza/TfhKoBHMkvBZaYQibSqs6GV6SZAm0ByGnhZmqcpjfAWXQcMKPd4yseEYaaiaw+yS3yucItZhGBoaSELXgAo7tmW4gEbsQK5p02RvnDzTsoocOhcKSls2aXRx4VBC5coxeU6/EffPnu6urFDaa5w/h5LcYbeQAtLl3q8pOF6Qoe7iP6tlveO/U5l035HMUdHeYmc1huO63kyA2/j/qt8BV86nkGxXRQ/0lT
+
+deployments:
+  - name: webServer
+    image: ghcr.io/b-zago/links-organizer/server:latest
+    imagePullSecret: ghcr-creds
+    runsOn: python
+    component: server
+    containerPort: 3000
+    envSecretRefs:
+      - webServerEnvs
+    envVars:
+      - name: PORT
+        value: "3000"
+      - name: NODE_ENV
+        value: production
+      - name: DB_HOST
+        value: "organizer-databaseService"
+      - name: DB_PORT
+        value: "5432"
+
+statefulSets:
+  - name: database
+    runsOn: postgres
+    image: ghcr.io/b-zago/links-organizer/postgres:latest
+    containerPort: 5432
+    imagePullSecret: ghcr-creds
+    component: database
+    mounPath: /var/lib/postgresql
+    storage: 1Gi
+    envSecretRefs:
+      - databaseEnvs

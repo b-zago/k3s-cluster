@@ -4,19 +4,19 @@ imagePullSecret: ghcr-creds
 
 routes:
   - name: webServerRoute
-    runsOn: webServerSvc
+    runsOn: webServerService
     host: scorevault.zagoapps.com
 
 services:
-  - name: webServerSvc
+  - name: webServerService
     runsOn: webServer
     port: 80
     targetPort: 8000
-  - name: redisSvc
+  - name: redisService
     runsOn: redis
     port: 6379
     targetPort: 6379
-  - name: databaseSvc
+  - name: databaseService
     runsOn: database
     port: 5432
     targetPort: 5432
@@ -43,7 +43,6 @@ deployments:
     runsOn: redis
     component: cache
     containerPort: 6379
-    envSecretRef: databaseEnvs
   - name: database
     image: postgres:18-alpine
     runsOn: postgresql
