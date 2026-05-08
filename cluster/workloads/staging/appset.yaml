@@ -20,7 +20,7 @@ spec:
               elementsYaml: "{{ .key.staging | toJson }}"
   template:
     metadata:
-      name: "{{.appName}}"
+      name: "{{.appName}}-staging"
       namespace: argocd
       labels:
         appset: workloads-staging
