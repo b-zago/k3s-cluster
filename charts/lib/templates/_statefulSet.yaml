@@ -1,18 +1,19 @@
 {{- define "lib.statefulSet" -}}
+{{- $appName := regexReplaceAll "-(prod|staging|dev)$" .Release.Name "" -}}
 {{- range .Values.statefulSets -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $.Release.Name }}-{{ .name }}Service
+  name: {{ $appName }}-{{ .name }}Service
   labels:
-    runs-on: {{ $.Release.Name }}-{{ .name }}
-    instance: {{ $.Release.Name }}-{{ .name }}Service
+    runs-on: {{ $appName }}-{{ .name }}
+    instance: {{ $appName }}-{{ .name }}Service
     component: service
-    part-of: {{ $.Release.Name }}
+    part-of: {{ $appName }}
 spec:
   clusterIP: None
   selector:
-    instance: {{ $.Release.Name }}-{{ .name }}
+    instance: {{ $appName }}-{{ .name }}
   ports:
     - port: {{ .containerPort }}
       targetPort: {{ .containerPort }}
@@ -20,39 +21,39 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ $.Release.Name }}-{{ .name }}
+  name: {{ $appName }}-{{ .name }}
   labels:
     runs-on: {{ .runsOn }}
-    instance: {{ $.Release.Name }}-{{ .name }}
+    instance: {{ $appName }}-{{ .name }}
     component: {{ .component | default "db"}}
-    part-of: {{ $.Release.Name }}
+    part-of: {{ $appName }}
 spec:
-  serviceName: {{ $.Release.Name }}-{{ .name }}Service
+  serviceName: {{ $appName }}-{{ .name }}Service
   replicas: 1
   selector:
     matchLabels:
-      instance: {{ $.Release.Name }}-{{ .name }}
+      instance: {{ $appName }}-{{ .name }}
   template:
     metadata:
       labels:
         runs-on: {{ .runsOn }}
-        instance: {{ $.Release.Name }}-{{ .name }}
+        instance: {{ $appName }}-{{ .name }}
         component: {{ .component | default "database"}}
-        part-of: {{ $.Release.Name }}
+        part-of: {{ $appName }}
     spec:
       {{- if .imagePullSecret }}
       imagePullSecrets:
         - name: {{ .imagePullSecret }}
       {{- end }}
       containers:
-        - name: {{ $.Release.Name }}-{{ .name }}
+        - name: {{ $appName }}-{{ .name }}
           image: {{ .image}}
           imagePullPolicy: Always
           {{- if .envSecretRefs }}
           envFrom:
             {{- range .envSecretRefs }}
             - secretRef:
-                name: {{ $.Release.Name }}-{{ . }}
+                name: {{ $appName }}-{{ . }}
             {{- end }}
           {{- end }}
           {{- if .envVars }}
@@ -66,15 +67,15 @@ spec:
             - containerPort: {{ .containerPort }}
           volumeMounts:
             - mountPath: {{ .mountPath }}
-              name: {{ $.Release.Name }}-{{ .name }}
+              name: {{ $appName }}-{{ .name }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ $.Release.Name }}-{{ .name }}
+        name: {{ $appName }}-{{ .name }}
         labels:
           runs-on: {{ .name }}
-          instance: {{ $.Release.Name }}-{{ .name }}
+          instance: {{ $appName }}-{{ .name }}
           component: {{ .component | default "privateVolumeClaim"}}
-          part-of: {{ $.Release.Name }}
+          part-of: {{ $appName }}
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:

@@ -1,33 +1,34 @@
 {{- define "lib.deployment" -}}
+{{- $appName := regexReplaceAll "-(prod|staging|dev)$" .Release.Name "" -}}
 {{- range .Values.deployments -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $.Release.Name }}-{{ .name }}
+  name: {{ $appName }}-{{ .name }}
   labels:
     runs-on: {{ .runsOn }}
-    instance: {{ $.Release.Name }}-{{ .name }}
+    instance: {{ $appName }}-{{ .name }}
     component: {{ .component }}
-    part-of: {{ $.Release.Name }}
+    part-of: {{ $appName }}
 spec:
   replicas: {{ .replicas | default 1 }}
   selector:
     matchLabels:
-      instance: {{ $.Release.Name }}-{{ .name }}
+      instance: {{ $appName }}-{{ .name }}
   template:
     metadata:
       labels:
         runs-on: {{ .runsOn }}
-        instance: {{ $.Release.Name }}-{{ .name }}
+        instance: {{ $appName }}-{{ .name }}
         component: {{ .component }}
-        part-of: {{ $.Release.Name }}
+        part-of: {{ $appName }}
     spec:
       {{- if .imagePullSecret }}
       imagePullSecrets:
         - name: {{ .imagePullSecret }}
       {{- end }}
       containers:
-        - name: {{ $.Release.Name }}-{{ .name }}
+        - name: {{ $appName }}-{{ .name }}
           image: {{ .image }}
           imagePullPolicy: Always
           ports:
@@ -36,7 +37,7 @@ spec:
           envFrom:
             {{- range .envSecretRefs }}
             - secretRef:
-                name: {{ $.Release.Name }}-{{ . }}
+                name: {{ $appName }}-{{ . }}
             {{- end }}
           {{- end }}
           {{- if .envVars }}

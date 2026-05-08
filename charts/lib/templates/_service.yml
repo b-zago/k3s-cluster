@@ -1,17 +1,18 @@
 {{- define "lib.service" -}}
+{{- $appName := regexReplaceAll "-(prod|staging|dev)$" .Release.Name "" -}}
 {{- range .Values.services -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $.Release.Name }}-{{ .name }}
+  name: {{ $appName }}-{{ .name }}
   labels:
     runs-on: {{ .runsOn }}
-    instance: {{ $.Release.Name }}-{{ .name }}
+    instance: {{ $appName }}-{{ .name }}
     component: {{ .component | default "service" }}
-    part-of: {{ $.Release.Name }}
+    part-of: {{ $appName }}
 spec:
   selector:
-    instance: {{ $.Release.Name }}-{{ .runsOn }}
+    instance: {{ $appName }}-{{ .runsOn }}
   ports:
     - port: {{ .port | default 80 }}
       targetPort: {{ .targetPort }}
