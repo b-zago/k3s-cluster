@@ -8,5 +8,3 @@ key:
       appName: organizer
     - chartPath: charts/ships
       appName: ships
-    - chartPath: charts/wp-prov
-      appName: wp-prov
