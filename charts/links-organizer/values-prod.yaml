@@ -32,7 +32,7 @@ secrets:
 
 deployments:
   - name: web-server
-    image: ghcr.io/b-zago/links-organizer/server:latest
+    image: ghcr.io/b-zago/links-organizer/webserver:latest
     imagePullSecret: ghcr-creds
     runsOn: nodejs
     component: server
