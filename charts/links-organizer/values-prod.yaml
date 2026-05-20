@@ -10,7 +10,7 @@ deployments:
     name: web-server
     runsOn: nodejs
 routes:
-  - host: organizer-staging.zagoapps.com
+  - host: organizer.zagoapps.com
     name: web-server-route
     runsOn: web-server-service
 secrets:
