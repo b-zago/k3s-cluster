@@ -1,3 +1,5 @@
 .env
 .vscode
 .notes
+*.env*
+.env*
