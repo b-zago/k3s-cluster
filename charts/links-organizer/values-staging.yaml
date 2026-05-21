@@ -51,9 +51,10 @@ services:
 statefulsets:
   - component: database
     containerPort: 5432
+    imagePullSecret: ghcr-creds
     envSecretRefs:
       - database-envs
-    image: ghcr.io/b-zago/links-organizer/postgres:latest
+    image: ghcr.io/b-zago/links-organizer/postgres:stable
     mountPath: /var/lib/postgresql
     name: database
     runsOn: postgres
