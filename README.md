@@ -4,6 +4,7 @@
 
 ## Repo structure
 
+```
 ├── charts
 │   ├── nyanify
 │   │   └── templates
@@ -14,8 +15,8 @@
 │   ├── infra               # essential resources
 │   │   ├── cluster-config  # config resources
 │   │   ├── monitoring      # prometheus-grafana stack
-│   │   └── sealed-secrets  # NO CANT BE BRRR
 │   └── workloads           # argocd appset and workloads defining resources
+```
 
 
 ## App of apps pattern
@@ -28,10 +29,6 @@ For example let's look at [ infra.yaml ](./cluster/infra.yaml) which watches all
 
 I really like this approach since it enables me to only modify/add/remove manifests locally and when I'm ready I can just push to repo and ArgoCD will take care of the rest.
 **But most importantly** my repo is the exact description of what is currently applied on the cluster and when something unexpected will occur I can always revert.
-
-We can visualize my ArgoCD GitOps setup easily with a tree structure:
-
-CHART
 
 ## Secrets management
 
