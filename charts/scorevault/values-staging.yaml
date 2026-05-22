@@ -1,57 +1,39 @@
-env: "staging"
-
-routes:
-  - name: web-server-route
-    runsOn: web-server-service
-    host: scorevault-stage.zagoapps.com
-
-services:
-  - name: web-server-service
-    runsOn: web-server
-    port: 80
-    targetPort: 8000
-  - name: redis-service
-    runsOn: redis
-    port: 6379
-    targetPort: 6379
-  - name: database-service
-    runsOn: database
-    port: 5432
-    targetPort: 5432
-
-secrets:
-  - name: database-envs
-    runsOnList:
-      - web-server
-      - database
-    data:
-      POSTGRES_DB: AgA4kzOzaCZGkxuuotlJVoMnrMKdul3mxwVUf2X6uYTd/7eA5fh7msFLngBKrgSS2b2rexICdw6Yb2XzoLsfiGVks8ogCN9G9gfURs+/20WDnKgtRkZKDo4q2LidgtwgJi4VvXcZSnW2/MRE471/+kWS1hFyb+IAtRSwuQuQuH/EkG77n6jkU2uiR7AWMxA+kK9olFC9B/sCLnar8dXjAGjb6uO/Gm+SxA5M2QpY+uF5Ss8VbN2gqFqytBMvuHSl5mM9O0HC7c3cXStPhJ++bCDjJGLNlCtmGPE9L0gl1sommugDlteD3uVlFEy3YKv0CtlXSxwWC8rn80BQOiSvpzovDxfVmXTRTODcTdhGM+U4fwXLnxQN/FOYpIOhOdwLFm8KgVJKkFCkYFws9OieedaW7RqnvJ1LfAh49C0EvuJgeIYgc9n3nYkUpQVA8AHeNzPHE/xzNXazNVO0wcnv4bJjXDPOAfWmW2lpggQGmMbg5KlcfalZPJ5kZxPKVPg4A7fv2mC9roF2Fc8IsCJicfIGJhvINQZK3T8v0FUVv7vccXqOVwHfgkKuvUFQwGxYCi3fsKL6GIgE+pPyQZNZFY7yG+xlvvgfaKBraV1HzAy5gq8+7DCL/28FzanXFyruEKLtL/ZawMqAW/IzJqTmyNJNrCZwYmKu5J8pdwVQCvHHhmkfoV3AQjJz3YEKpSf6VxdJ37CIfO7LXaFk
-      POSTGRES_PASSWORD: AgBVfIO6Zxs2ndzH6DYTVxeACWXoYQrmR1gN4rGzElheuSqH0//N9FgBN/YS99ZVnxQrdSIdwgWoG3zB+xiPrMAUVxqqeKVr+aefDoXO9gcEBBgQpeIUTg+Ue/3954N3F2DTDBVS6WlO0uCMTfriod7QyN3K7Ka9QtCXCAvqB1NCQ1+pCFyvtqmOXrLvVqlNA3qgceUrm1xmty1gopHZdTe5b4LCOdTmF1I6lsk0SxAlRwuKy1CVGcFS2BJ0Mu8y/4gNYKQH9tEjOAviuOiKn+4c6vNBWeaLYQU+RhjWtxAHhzolFb4RkGYPEsGip5RTJfHEJG1WxKosl6ILqycymcXkfA48StIbhadlyaMoidPyOShwpKj7z8qidXEt7oXPHsiRE0cEP3m5Qz7iuI1dJei0RXSawQ0orkIT4i0zj4Ml9nqjRhTUVeT2ws2ftwOzGngE7LIOLs2WcVGXVO9cRdPacr2T1HDQfuzVTit09xbrZSah04QE88M9KvdAGzF+vU5koD7CetyO4EPAKsdXHGNI3L7eGepy1W+yDQTSjKPI7kN9UcnHcg/CDAWHAyiPVFg9MPv/0/l1Npn0e7aXCxP9lnioc/AX9C5cg/1+zjOdmIwzCT3aaErvfAcvWLq0NXwPT59W6AzHpsRgg7aUuIrDKw4va1x/VEFCqU/GLYiFjPf03amqlG7ReQmuneP9XIT0q/eMP2LFXujYHw==
-      POSTGRES_USER: AgA8A2ag5VSQOXKW+LRbn3L+bP0w8aeIVimE5KnYa2eTbMhXvmtBKIm2pOZDRTZRnsBFUYu+DXKF2PokK+E9bvZR9Qw+AfVlymSeoNCMUE+Gl1jjJeYKT+Pyuzp/jy/MtXjW6vsKkgTW4zDwKizs2ERB1Swm0/J95bARZ43oSDaNk+dBnKGdE3Mu5HX+kuTFL4w19zG3yDnEgy9hxW05JiuDupXKHUol1ITLVzzuhqXFAO/SeBkjCxiS+sGlPWcNuDAm/0I7780zidIUaDrxTKy940axGFlnqjJT3gBjGyaWhl2S/yCLQr8lnS0jvMFdlJuKzROs83tKTuifTrAhUjDu/Di2opFBbFfJlGI8T2WznYzHBOrIezBsyWefbQe7gE7HPPDyldc6r/QHtbhrDgtFcXL3VYrvr5g8NES9pmp7W3h2HRufnnQht770PBScIQ9rTOPx74tpkiFXJSAIJ79cL6ot5yBp5GBKbO9/oObZ/IravkJlheF8q8f/JVGV/7y9PyDO/uweHJ7X7uLMyXI20oCdgiwBqpY2GZLicL0z1iFfNaNjpyUvN+FNJ+Q5D8UgiDleU1PwgeNssXYKIGoCiKLYZKCYuATN8ojFzR8Fl1i0KeoyT7QwOukP9pIf4ErfGr1/ZJ5TvVDCLlT9qrVKN1LYlHJ88QCcGcgX3j8nyWU6mrSDaaENt/HpQ3klMJZ/XBWmkFp9
-
+env: staging
 deployments:
-  - name: web-server
-    image: ghcr.io/b-zago/scorevault/webserver:latest
-    imagePullSecret: ghcr-creds
-    runsOn: python
-    component: server
+  - component: server
     containerPort: 8000
     envSecretRefs:
       - database-envs
-    envVars:
-      - name: DB_HOST
-        value: scorevault-database-service
-      - name: REDIS
-        value: scorevault-redis-service
-  - name: redis
-    image: redis:8-alpine
-    runsOn: redis
-    component: cache
-    containerPort: 6379
-  - name: database
-    image: postgres:18-alpine
-    runsOn: postgres
-    component: database
+    image: ghcr.io/b-zago/scorevault/webserver:latest
+    imagePullSecret: ghcr-creds
+    name: web-server
+    runsOn: python
+  - component: database
     containerPort: 5432
     envSecretRefs:
       - database-envs
+    image: postgres:18-alpine
+    name: database
+    runsOn: postgres
+routes:
+  - host: scorevault-staging.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
+secrets:
+  - data:
+      POSTGRES_DB: AgC53ObJ1ogjJ1RZpGKnv5ntLFfYJZ9oU/0Uu4eZMhlELOUS1Qj8uOMY5LO0mk6bbOz5uwExOpVMEbrUr0Xk053k3MNrTTcaFXUiId9n+WREFfBVS7VhMh4WptAQ03PycRDqKi+XPmaF5Mv5AafTqm+PeC8l2LhcKieUJ5w2rTATxDs1gKWIjX8UV9afEFDC0kSrq7UTeowWHuNcWjQLoIQGMTXwMzi7k80T3NYpIIUaWz7Vk8fzuQWdofrKB66pYIC6WCPtZewhi+HnwL7r3xS8/ZvMxTsp4HfLJDCFweyDYhi8x0F6//1U7U+tbhjb+GkBBh7EG8EsqaM4vtELpTVLZ0xAD4iSlts5Jz2OC9Oj6oRF0rMYGebgE88Bri7oknH7EHgiQJYo2VsdwVx+EN+/HO4mnlZrn68OCdmTEYvTfx99awa+AQgAYuKfB3mn78lK9BUqEdtJvBZA1wMgGpMqJjCvMJNZ9KU1II2UZBJaR4GDtMqb5Pb4S9uCB9vLK+L/oYEcYKCa/touwd25CXlS5IXCzYXi6LIpR8XIKazCAtNcdu1dyxJJeEgNnydfWn5s/eB+Htkn/pChwxAZEMs+s9itEsN80/1PV/hkxe7YRjU7mm+JnnOSvCMBZse8UcpAl++UTHhSy09f1KbpKR8/PmnDlDWEibMoY4ZCqVrCsNBRdRY7zgF6I8aCa754hS1Oazb2LX4pLw==
+      POSTGRES_PASSWORD: AgDZzCEFaSOoqeGb/Vc0uC2fqq+QrqKeUW4MFQ+pVvJNxZvpKM2EQtk++MKm5AXfZ+QdABGxd95qL1xoN7WpH+Mp28WFEgEIea98qre9GgOCxcUg3IBJ9McUSCYii43wW/M4zXI22zwiwzvb208oAzRy1Hrdcgm7HpZmvJZaVQRktUAFdarykjWQwI8Wb8QEpzr/8soXhMyviz5VLi72Qj80alqDolYwY0MhjiwXWxt7pW8RyVrJowJyXqdrnTkDZJlklvDT6Eho+9rwxH7I+ACgMufXC6lMgXEQTXg5ooQO2nIVONn1kx5K3dtlMy7wGIDgvn7ENA7SqVYgnb3zu3qiN0Ork/wNJnIN3NrWKgKixAcLyIyNF10vo8Xd44RmOnFr1iVma5duJoiYh0miYD1R2NR2bb8mlA1w2EzmE28AByrOLT5fhirDe8LPF2ZdKKNF2cxVcr4nCaJ/RJ2f1HCri0B078eUkqfvEogYrq0t4dFy1B+sn5Boz+s9yll4qRWeTB+aYi8wLZ8jAzS7+qbiXZipsNHj9h7mLWo+qhkuvOupQXAmq0kHELPg90XGu0QUORC48+BQ8+pqUpG3hArN3tOiw2qpVJEx1fqNy+3pawqKN7LrXlv83Dlnd9VaGHFOCMc0bEN2IGfJjqgUEfBe3PHENVctdas1RrV7tUmreh0zvQgtUDDeXMkxzzdgmveeGwb28/Xu8g==
+      POSTGRES_USER: AgCx6mvMJpR9kFjAzI+jS2Fd8TKbwluGfo0drEG4QUisWCZHAVN+abP8fvi85t61sV8HbNTzDAmP5IlTrTBEBLNKX3zOV4n1dp89N9LYXnosiCWRT876YjcXdEpWy4p6EtFMzD87KAuYohJ71O4SYXt7E1LBWSYKiIpHodipAMlckvNXSTQW+wEYKWhF1KqrxDrXhVlnaD7dAFExdJvKTic1UfNJ2SYQW5TT4HGojQRFfOZKx4VaOEJmhxJt2PlsMidGmvqr++HbR+i4ZQbHS/q6fWzgRTuQmUEbAAYNsBXRuCO3Qbky8AcMvHSHrUqZbU2VHivRmbr/58WMw2E+Pfy6wI5U53i6JTnLEZrIGEOgMVboUGaJFYbsBsJxRsKOAL8sAeisB7KWkg0kT03fywU8mq0EMWqBfS96vMjhldqmFEkmBI5HuRrjZdLteSRJzo5So/KT7sVMpbuArZxCAvDQXnf5njexlkmqivYrVsdQq0QS/f3s67M1XlHonFggpg/AV3Fz7Ts7MhPGltViAyQ8VdBp00FFncXoQphdI32E3XJC3l6TYNSdI+uJaOEs53SglXs7n60pwk06WznANwSIMJrhdkxTwA/Plrsp/AxZVwUD6M49eGLO17KFRpxTkJBqS+ftQO/wHsLdCnB0VYCrDrGoNBbd546Z5DmdLmNlrjbUCeXhuVqwwx8CKCvt5VMOOkLiws6kQA==
+    name: database-envs
+    runsOnList:
+      - database
+      - web-server
+services:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8000
+  - name: database-service
+    port: 5432
+    runsOn: database
+    targetPort: 5432

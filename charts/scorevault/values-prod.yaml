@@ -1,0 +1,39 @@
+env: prod
+deployments:
+  - component: server
+    containerPort: 8000
+    envSecretRefs:
+      - database-envs
+    image: ghcr.io/b-zago/scorevault/webserver:latest
+    imagePullSecret: ghcr-creds
+    name: web-server
+    runsOn: python
+  - component: database
+    containerPort: 5432
+    envSecretRefs:
+      - database-envs
+    image: postgres:18-alpine
+    name: database
+    runsOn: postgres
+routes:
+  - host: scorevault.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
+secrets:
+  - data:
+      POSTGRES_DB: AgB3NBKlsjt9QlNNihHjOVP58Jo1+tkhVFqoAKXFDwWnWY89AWjuYPOS+Fo2B3k25DYS133iYU9xfjGTjFxLhS41jSYEYcvX6ZyzrJRPwkXG8xZxq++caCGUZpsEXBTsvnDYhyVStYJTx/gw+h0JfGPz3PWIg7uM8HiBGdo7LzgPpcNPaq3oIXxoo3sIKf4mLzKD7NUZVfeYmerkKPOgb+50Os5rnD6NtCGWM3hNbJZ1KBFxVTwrC+KD0IoAPz36wzlJFP6CbfVBtFUmtsmp9cL8uU3gegtP1rcDtF/fm844iLF5sGJqMRYL7bDNXpyJHsZ+xvKJWUOtkH98xUvzOuTo4PxSMNH2xOdey737n3d4PMv/8WqHMEhmv6yvSBLsnNQtaG45vCQbFi9R2SLZCgfy1wERgKg37nB7M1s2ZUPQqiaadqK7PpsOSbLEgLwDuk8bMyv31OCCsp3g58FCYOzefGC3cbqCcyCtnzNXtKwFPJ5lvLqXXWvA057vaPGBvm0beFMdJFTEdLCwxPaHak3vaF7BQU0Sr4nnwxlRq0EbVIqwp2H4uQqLgsQdXh3WeiRGknJ0cchMc1gmiKR7dTvNsCothy61sH+I/HuUyVc7um5d7XyLEs9tpOU5GOhJUzOlsiLz8fmrEmNLfl/p9Ik2OYE90RlSaPQOARTJD2CsGdLnQcUs19NB3BM307uW9v/xCelp/oR/bg==
+      POSTGRES_PASSWORD: AgBcyU1FvkrLAZyveuc7jxgYxyQ9dU+xZzT7P1iVGATmO76jNtdIP/1VqPuTbVyiQwhFFjyqBx6D/xyFU/rHons9r9DUcAHY70kOc0n80wmv9/nZt150ax+4pBI1xy3FqVQ3eOLJdokfjnybqJ7I2Flz8N+lLyGHI/ZbnLOGqMCscACy1bPRRB/nbyy4gNsgfYivBoYXH21Eht03fLzY061wowShUOj05ru6+ifnldnxwx/chXt7WaAEF3zkQUuW6kGq0jpMx37hAUjViECkDhg+U1VQWOABPR4rCJBk3mP68peCO2gnCTcIkbPm0NfK6j4pn+ZpakxRQ/BiSH4GEndKI15b2tUM2jGsaXhS66OG+3tFK5CQQB0Ff7hKDYiWJjL4lohLOVqsVqLOv5rxSZjjHY6BeQ9EzJJFN8NVZuMRnlncs71mPdKVp5jXVZPC5VCzXLqbUwm5iUal7JRg1BqS/nFGuJJSmi0YF+0ZcrTEl2BjWxpf0HHEfF2XDQ8IGr4XBlEM9nrNEXNciQw+UgLFdhNmRx6HySGQCFjKNkXZjl/qLepFhS+j/Dt73DONZJdWRcpwTV1qzPlZ8XK4icH1KKmnzaUR1zmTNAAre72EQlxxjUwQdo6BZt267cnojVCqETePur8pAAlrSk4USbXGjFLR0jhbAWsBCWTADSHqX6DHCifoKfAwjVIkDXILZcoyx4u9cK/m0g==
+      POSTGRES_USER: AgDj6gqzPIdkSDKjt+dscFKneZzcAYbndM/WWEx61tdXHEuhZZdK35mDTPr76+ZdLkNR8LUOBUK+fj7et/AaTkFZp6O7+5NfBWcZxW3CCBBog/RkiLGraD/8s3Wnotx/3cqnAlRvkaE0m14HPxMaOkP03N0sQXG2GtObWBmdiEg/3ix1+Dw67bdna12SPSoy08rkqRVicHyWeOa3WTR8Lgto9+KK2/3XB4Jbi5vVbs3r6QY3ofTShx2OoWP9ebYG5U9VIHSQ6tEP8IIzAo7RAkChpzXFIg63T66bIKOoFRaWDAJWNPkxGZCWuFZU66VobXziWrDZlYvWT6P5OEGZvkRohsYj/2uj2lTW1cLMrrVOXWttn36JqTBBKUe7Yucqu9fq72r6eNt+/wJvoDVRmFnKRnmYMKdqrG5v+8HdKdbDR3AN859XpUjNwDfZNzMqvbPZA0BXGSadFB49/RHslkrbgTZJZdTSnNvSAcj41jl1Ciwd0nH1HIie2qonFR8mLODvU+Pbl1PZySXUTHQLM7yCIGQ4PMQdLEnzeCTj5gTKxJY78JVkp+WEZmaAjXx3rT8IHUkwb69KE96G8ncxpE8U8Fea/8niRrgIS1KhlU9c1i0xHHLtO0zeDOSSWwKBVMTFfSSE151LVZaoHBPJRG3wzG3B4SBtPgCSmTbyqKp+6I2KjPDOEUH182cJCU4Y0zfJ7Od8oAXtoA==
+    name: database-envs
+    runsOnList:
+      - database
+      - web-server
+services:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8000
+  - name: database-service
+    port: 5432
+    runsOn: database
+    targetPort: 5432

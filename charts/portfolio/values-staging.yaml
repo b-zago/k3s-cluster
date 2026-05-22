@@ -1,20 +1,17 @@
-env: "staging"
-
+env: staging
+deployments:
+  - component: server
+    containerPort: 80
+    image: ghcr.io/b-zago/portfolio/webserver:latest
+    imagePullSecret: ghcr-creds
+    name: web-server
+    runsOn: nginx
 routes:
-  - name: web-server-route
+  - host: staging.zagoapps.com
+    name: web-server-route
     runsOn: web-server-service
-    host: staging.zagoapps.com
-
 services:
   - name: web-server-service
-    runsOn: web-server
     port: 80
+    runsOn: web-server
     targetPort: 80
-
-deployments:
-  - name: web-server
-    image: ghcr.io/b-zago/portfolio/server:latest
-    imagePullSecret: ghcr-creds
-    runsOn: nginx
-    component: server
-    containerPort: 80

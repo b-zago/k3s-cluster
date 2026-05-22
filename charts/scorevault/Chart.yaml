@@ -1,11 +1,10 @@
 apiVersion: v2
-name: scorevault
-description: Simple app for testing on a cluster
-type: application
-version: 0.1.0
-appVersion: "1.1"
-
+appVersion: "1.0"
 dependencies:
   - name: rikami
-    version: 0.1.1
     repository: oci://ghcr.io/b-zago/rikami-charts
+    version: 0.1.13
+description: App description
+name: scorevault
+type: application
+version: 0.1.0

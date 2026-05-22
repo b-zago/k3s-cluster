@@ -1,11 +1,10 @@
 apiVersion: v2
-name: portfolio
-description: portfolio app chart
-type: application
-version: 0.1.0
-appVersion: "1.3"
-
+appVersion: "1.0"
 dependencies:
   - name: rikami
-    version: 0.1.1
     repository: oci://ghcr.io/b-zago/rikami-charts
+    version: 0.1.13
+description: App description
+name: portfolio
+type: application
+version: 0.1.0
