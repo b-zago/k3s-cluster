@@ -4,7 +4,7 @@ deployments:
     containerPort: 8000
     envSecretRefs:
       - database-envs
-    image: ghcr.io/b-zago/scorevault/webserver:latest
+    image: ghcr.io/b-zago/scorevault/webserver:bad4cac
     imagePullSecret: ghcr-creds
     name: web-server
     runsOn: python
