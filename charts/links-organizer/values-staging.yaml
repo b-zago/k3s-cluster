@@ -13,7 +13,7 @@ deployments:
         value: links-organizer-database-service
       - name: DB_PORT
         value: "5432"
-    image: ghcr.io/b-zago/links-organizer/webserver:latest
+    image: ghcr.io/b-zago/links-organizer/webserver:49b7bca
     imagePullSecret: ghcr-creds
     name: web-server
     runsOn: nodejs
