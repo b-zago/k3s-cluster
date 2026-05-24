@@ -1,0 +1,29 @@
+env: staging
+deployments:
+  - component: server
+    containerPort: 8080
+    envSecretRefs:
+      - web-server-envs
+    image: ghcr.io/b-zago/rikami-api/webserver:latest
+    imagePullSecret: ghcr-creds
+    name: web-server
+    runsOn: go
+    serviceAccountName: rikami-service-account
+routes:
+  - host: rikami-staging.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
+secrets:
+  - data:
+      GITHUB_TOKEN: AgCo8+iYjzT+PTRNXHAKzmNwuO3IQbTNVw5n3i23Uf6vdJp2J6HS3BlK5tgT1g72p+OuXgEYOOEvoxYqJIbQZYvgZDTFH7I2DIDILOqz3EFAyC7cfwC0dMMR0JXqHvY9UAIlvIzJln3VsLn4G5Xt7W+Y81IBGdmOpntGgvOq/MyEkAac3m2yZMASxBUC+cffAjBlnZIigBha4doqA2sdrYt/T1MAgFOkBzdU1co48MlgWuItfAuJ8InDERl/wXcedR44eIZ7FKPqMuoBTtoIWH3lGhyuRmq4G4MgJ+CbO/9/eLqiDPEtMMpR/xvlPYObonq02dz94rbWeCCTxvZT4OKkSHKaPYSdTT+VxN2cgF7Oj1biRlIoD5iMq3bY69ygzbadVjuZJ/bhx9Tcsjol9kM0akAOmuC5C+58Z022yrB9TyEgUmlhfn+rP0lk8kPN07muZlhKwJjR2GrKuuVWqowf57ihtsC2eku1Hcy1Y+RAll93+e41EyRoXCUC01SqnqLT9dje8oxTFxzZx6j2jysqCmK6iWSzPqUu0O+Nu90YY9o/HC5zeWsxwlj4ETXc0nG/itvQUhkTycUHMAgQw+WLoPgnSJSwydap/R9V9H1fhlF5UJ1RJy/2SF8VYhuQHNLOSjhZsua+laFyBEz0SnRVgqEmm29iR2dlIA8T5cyUX4ACo8FzElg9aHpcPD7SN+ZVzbCKyMik6b0bAa0dkLEagnmFXB7eltpVqJxOGv5fq3e6KlgzwfZT
+      TOKEN_1f1b082099b90969: AgBmZxrs7pGj7Xx7z/pyyTHzGPv4UHVQ/eglsP2tZ7UIzGG6a3NdHWQDhyFHdt9/pQTdPvl6jSwI+JLqM0tisb2qzYiZvpDDv9eeu5wQHUzfYwCg+vDlpcWMdcHKJ1G1vQ65UCIvZgrkblt78LFnclsURwRKYGG3/j8kN0qMJWo1hKlgb1clBqdCsl55ytnSMDZaBN+Nc0pHITJke2hPA/rX9aqHJzy0zq3Cp8zu+SuUUhZpLAesvWkWyka2L80l61Z1amCYtOs/4fhz6SLgYnPGE5PqDKmx3T90Y3oAg2dRIl/sxoNrZF+DNoDdUzAUdAYFauM39WRBPTFh/dN89IEd/x11rg/bZok45FZt7alkPwFqQnlrFlYttg0VCrF0a7Bn+4rMkmqIl0hUQzEqqOnuByxSg5qAevEnhpuIIVvyVHSLKK7pByHsP5St/3IpOS5vzWCz8CMKDMpRO9oRMbA4fBk5ymm3P9UnhweP7oLJAt6ru8RQAVETiPrtDpOVWTmxkpwOmsJeTlIAFBE923cYe1V5KX46prNfZY6+6yfGD1W05vgvbrTs8kGEif0XL/mrf77vixL5Y0vS+Q9LrmUvt+CLjl6TIpIGao5vIBsNimdaDSfO9DW43ZAKV1hC0peLoFHz+bBZlKLhcCiyGEwRQAUAQKUC4A/EJhBvKflMgcPlwlpCxYWOhGgFBIKurW4knhLGrwL99eM9OJ4JGg8t0Rq66vUDuTewuSkjYWnbmw==
+      USER_1f1b082099b90969: AgDFDbYb77g8Is2WQ0I7eotjFqW5rn5yJaWqqekfmIsFQWQ4rVEUsygYN3+B8wHMbvGahp71xX6EHD4F5+QAC+290MwMXlnQStkHt5Mpr0sX12fqXYBJsfK7SPjgj8H+f1f/5Lg3zP39IfRdOV+ioXKx3v8g3rYkACrc9a4P583c/CLTNYmfGg5ybZhmF7bgg0Erd4QrPsV9/JmX7KQm5bLueCwRXv83YiEPZvP+di/t4G3iQCSjt/D8dgx+DdT29ar3hagdRrx6JVzbds82xDqkh9HUuSmR6ECyRsmcQ7Luxtfum2PRk6fbHonko6WFmI2tjFlFV/YanvDiKTsxP3P/Aa+Hj6n2qhFO+Stpa27RuqLWhDJ1InGTTSoO/q/19muhNLVuNBm1xOytJsvdIY1XBmzoNVLmXhkAx9oHnI8PD3WsSsUbjx+SVMb7vvMqBdLjril23Ue29ogtrwA9LIQ9RCWfAjZMTWMQ/d46FVH6BTdd4Yl1JbiyJozdvSIy8Dnv5nRLcOCwgU+Cd7MuWOhRVN+0IIjhZzeG/XE5Hx6dWcmv5Y0ZqsZfyjPxAdI5K1I1Nq2EMrBDRekg44SDMW5v1HkdyXy0LmKwA1LpyO/TYvUabmwm/DnHpYk+L88B6LAAjSgcil7vnU0CwZy9omCnXCGxem7HchQvu+x2oTz5ZvbGyuL6XKBU0nj86h5hnVWLrQWJZ+0=
+    name: web-server-envs
+    runsOn: web-server
+    runsOnList:
+      - web-server
+services:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8080
