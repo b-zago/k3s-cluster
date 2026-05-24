@@ -1,5 +1,10 @@
 env: staging
 deployments:
+  - component: cache
+    containerPort: 6379
+    image: redis:8-alpine
+    name: redis
+    runsOn: redis
   - component: server
     containerPort: 8000
     envSecretRefs:
@@ -20,25 +25,24 @@ deployments:
     image: postgres:18-alpine
     name: database
     runsOn: postgres
-  - component: cache
-    containerPort: 6379
-    image: redis:8-alpine
-    name: redis
-    runsOn: redis
 routes:
-  - host: scorevault-staging.zagoapps.com
+  - host: rikatest-staging.zagoapps.com
     name: web-server-route
     runsOn: web-server-service
 secrets:
   - data:
-      POSTGRES_DB: AgAWds+DnZ4QiasxTm3d2Gq4FmBzKMm4yEmAnKFjibUwRa86UzrimhZkYxiPOAbu1183vNwobz7yY6APkgghCCkgc1bWu2Ks6fO4OFFM7B/3vOgj6M90a6RypSRtsCiGRFZtb4v8ewDdxog4vNMW56+eRKVkM0dndatK3byinCYZu7EUE0AAjY3JHaX2SQlk0UqlSctfdNJpQ1yv/wWQUJpXYH1S5pQkSSqv0dMjBnASsLIhqG5CWXVm+QOjwUpm54ja93+UDBclta59tozzwlGbZgljwLXb7NF0qUVyJc2TllEqOkVf1xW6PyY1yWa3YOzCHLC4dydaRrNMhyg7T1VfAvY/1zw/3WKtohG6RbzNrO4xnqCbN5s3n4Deh49UvRCuTo9zsu/HG968LW4N8WEtd/Qx5VbVTnNRvYmKyL/4w3R83xrAn9ZlpFT/Nl0PPLmK8wxkuYL5NJoqTs11VqDdxAKIFKVHMLV9lqa5WltBRRhaVlpwiBN5nhW02c8neNI9ew5ta5qOx9fhCGL00C5qT3ZH4Av3M32zshmgqo7W6C3iW/KR9SC3eAZWzr2sg4y9lx5eEbCiPeheTy3fSDWkJnR5ZgD0q4N3aSgyk36ayKWdpCdSHsQcc/XIKm+cQYqQo7qqt82S5ZhccwSh+fUDr6oexptf/xXGjQbOLLpaUgZbok6K80JQHk+iufkAgUHkcs3F5aulfHzas6eTwE1V
-      POSTGRES_PASSWORD: AgB0ZEg/X8/n3yVdPQKitoAsSRl6u654HspYG2JC+A4UTs6fXt4Le3qRw0ZnrVvTXlrz8Hp86M6gycYkWvlvfeqv74LY6zzyioXKOxhgZCStd+KoSCVVD5AvTz2BDlwK2fehdvQQbfPVZ3wh9rKSYCOIqBCG68U88MsIsjJldBy85tuGvTJ7vEeq33liJyQPBWt/4qp888346wolTYXWhXmRb/l6HysMrNnTzLIbWFxU5m3PAI0btW0uWelnnr3pUolId+0sDhDN8a37IVa0zNt8NE9d98HxiYPciCFtRMa55g6+lK5GPQ6KT0gZgnjDhVMbpHUwl0I+9Fx1zmb29duSXEmzAw9HbsfWYTigIK8a+TLzOMrzRbif2PnWoCPob2ywnjubdSAtTCB2M175cctxGBI14OSsGO9ol/9+sNQHYF+E9gI/o8ge8aVxq3i4Cjof4XjdGbPXbj2u6Dq7AmM/VOQJN5uCfYONo3G829FvYklXMyLEUbh1QzoFBOY/ltf7QKluz4NnImPV+EmNX/bPxffX5mI/jHtGcNj5xbreTDg7nFPzNCZVtrXQ1lZ85jiwd+yLvZQJUpMaU3yDOD3hvltNvty7nSH/B+X5+W2AJ4aKKLgje6Jifbf+2SOAzSHjjBUAy7hQrZbiTZTgtDII37VCnG+cKFE3uuC43OIH5Hv+vBpYJ31SVcRQ/DyBIZ9GPIX616Dpq9iWnZD47BcH
-      POSTGRES_USER: AgCKi4RqKPusNvl5XKMyhoEEeFfHVlGNh9x297E9UnGS+4qezVU10uUn5ukw21O4lsUbcticxgbdA37WCxK2ZHeJWxirR3UNjJ//isfQ0dJHQvN/bZMIMvVARmORpNJy/4JCxJB4lOlI3Gny94MEKF/SciNNHcmhw6Z3ZvMfPzSanNRVURm7CH2hFpe0dxeUeWpvUqQB6HeFewOw7E3fJOIE1hNkDRfs55a6cfSAo+9ltqYfv/hRmc6CMaAv7VaiZXgMLDlE6bk7Yy0uOEgQnqUnSEKsZ2/OmhBL95RA0lbv7LOOjYhVlwqzMTcKAUP9MjavWLug7Pe6IHn6t5BBeajmVHJzPBS2h640nJyJeuXDQuNWnXWKFAxRjmMSSP+cjc0x5zmLFeeuHl7yeeLL1PXI/rjvxS5D9mSWSx3ulvALrSLW2ZZjoziKrulCPUtfQtgaMYSCzQCbQITNS6t4lzcXc+fWv54e+Ez2HD/vchyYR4z7h0kAH7QRFiZOOoKbIEpXbbjEmVfW7FNnT97x9ljMr30jTqsc1S9bBXRHcXJtze/JJY5pxghor6dVZKFawpZLCx5ntShRynRtc7z3fhhMscKMV5aKb++QW2Rred+wM6jm7Z+GCBZp9bEWnN3XBLkJ2agZ0+hRGlPt2zbAD9PTGNtl7aOV6lGu+DiqSOttU/8sB+jDAoo3SYyUO+ZXg10bYJnEO2GbhU3a1yFCidNR
+      POSTGRES_DB: AgCXDHn83sBtaZ/ks4eTHO1dQfep/ARzkeorzIHBH1pIaNMFs6dAxeAqAldDZbzH0CD7WIgbELNNIrdwpv3i3dxKJ+FdTMy/rH7SgVZx/gAd7Ew/mdF2eSRK+0b08PQb2kv05HxqkIOTxheqjqUf80WaRStww+SATmjliHeRcGTeHvoO96MhLKmnG2sF1/5oXvZuchw4sebVzcsU79kXMfwUWSpQ6gv6dHbOFQGeyQ4G+2sS0EpihgAoy1tncdmnXBBcLdBwdXNjJdoodQz33qicYmVgwG56CzEQxHsRRNBpovEB3PVkiiOtqhe1FD4NozOKt2VbAOxDHIGpwVFOjCE2PmAR5EO1kDzgn1+LNGj5j6432yJO7VlLfEwsGGy8fNOdf1SPDA5GXZTk3ZOZSrxXjNxewgFOU5kWQV9Z8V/lPfj8lO9PgQMiFkt8ywddPMhi9gcB6Xafb1TuXF4R3Hixojg3XsEQ/vlyyGvtizynhJA0WRciBJeFXvEk7414VUXpa5JRc61yHiBZ00qVfyocxxlt6l2Elbl0KrCcd2UMmsSKzKH2dZeJ1EWrbwEq0eMfz2Fj47EQgJnPJp7i8HByZFuUg+MHvCmLE4/azd0yRmZc4eQP/78McrPzXsPCR511OOfIFNff0Vjx4dgK+4/O6uR6pND3E42fwWL2U5V+Bs7NffyDn86IjgfAndiX/EN3rnv57NzEZTLUzp2vGGUu
+      POSTGRES_PASSWORD: AgBJU9Zqe/NQouaCFaUUM922ibM/5eIONoLMMOTs1+DuoT2Oe3clnK5SRxNc11WxGQDbUAFayUTiRRbxAT/Kps4olnrt/VtfoPfh7IR0aF4SZSWU40jF67KaSFRkfkwZh3n7qf3tgaVuMjTIYw4yRckiqNhkiK8QxjwuLNZyRBGDzlf3rtQZKpAxjlsH7D/r+u8Mf36nzRpQy2YXORU6stQn35P8iKfLljaQxrkH5yQik38iReNBbCmuuGLuht8hf4GggMtK/okW+LjsoytmrKwvjewpE0xzzWeFMQR8t+sEBHhuEprpgq0OkpBoBXyjMy4dJReIT7yKecD4XiWaBlhBOB0OFcYDs4xU2NqfGPZSKRnY/KvMlWj2QiI/Suho4qzn/YWfLPqWEz8eP/0UTVwR46VAyEodLysIotx9JS1myGk++i6VyF6D53x1s4RRbMnHC6KU6WfQyYj2a2vANSX16Tl4J7ACXkqauOi79lw62Xiy/amzKN9N+xIwC+NCIBHHGd91pI8LJTwOa7HtG30AXuNlaetdO4GwLkd2yEuLFhsCyekXjwDzPt5+wCAnxaJO6ZOdM6p6r9Aed5nSe6DZipGyPKlE0acehXqMgQYPm+rfcOxGw3ty5PiHYQnPuwoZtmdb67OyKvPAbl+1M0tnGZ2YLkuWtfFTaSpDDv4P07xrQAnNsaBOe+GtQm1n/Pd8O100hcIbBwxVTqpytGaG
+      POSTGRES_USER: AgDpVa74Kf75+77pKVnNrHOcLJZscCv63lQ0lbNPltLhECi7YWY1H159FWnO4uP1XZTFwoSTnegJnXe3VxaHtMjJvDBRAT/CX95VUwZVgo45ydYckA0sBSttKwexlwayq4xK8ussD0uU0SrnBSjjAArkR89Iuaec5x6a7cAzvyxf+xJTjKfHlfSIwkDHUjPdNjTkgbmAgBzfbsxLMroo5PpNQkEgJ3Y7NGi/y2h1gYqCS9iQxIUJhXeGJANsd5FUhIybCwE8Wfde/PiCeBZHC/rooIVB/GbgMADmz4XgOcA3Ip9K7zb7QJskM+5qWBRKfXOUTr5Ugy8tBr6UjPB91NmBBONGVOskpb7F0R6zA3PapAskhkJpWKmV0iEG0yDMJvS0Gx19M5HKU1zQyAMkeumLeLnYWSdCKPSEiYiPXyMMgTpau3MXPUhj1qRcDAG64EB2oTp8MI6GQ+QjFKgy+f2b4HxFrVrTF6rv0THNB7mbQrlG+ULeCw7p5k0XWNRihh70yfBaZvJkT+xWiTBDtphMIhcyaXrnEM0NjSnmPGZOGCb6CBNhtPvVg67YYzEx1O65yKlcOg9SPuwg6gYvnM8pZCB3IBKDWRNavoHksBpGqAJJ3qFGLqy5Kye0897mjxIPE7IcRJl213a0NHn+P9QSWLxBWDxIsadUfd6xcOLAfOgu43TPjd3Tk4sBrIy0G4Ezl90ywdKqQ44NgjFXLUdn
     name: database-envs
     runsOnList:
       - database
       - web-server
 services:
+  - name: redis-service
+    port: 6379
+    runsOn: redis
+    targetPort: 6379
   - name: web-server-service
     port: 80
     runsOn: web-server
@@ -47,7 +51,3 @@ services:
     port: 5432
     runsOn: database
     targetPort: 5432
-  - name: redis-service
-    port: 6379
-    runsOn: redis
-    targetPort: 6379
