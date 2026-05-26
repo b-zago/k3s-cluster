@@ -46,6 +46,8 @@ For more information about charts themselves see section below.
 
 *This is where the fun begins*
 
+I use my own solution for this.
+
 In short, deployment workflow looks like this:
 
 ![diagram](./diagrams/rikami.diagram.svg)
