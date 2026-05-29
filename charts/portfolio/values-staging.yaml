@@ -2,7 +2,7 @@ env: staging
 deployments:
   - component: server
     containerPort: 80
-    image: ghcr.io/b-zago/portfolio/webserver:2763dad
+    image: ghcr.io/b-zago/portfolio/webserver:3dba0a1
     imagePullSecret: ghcr-creds
     name: web-server
     runsOn: nginx
