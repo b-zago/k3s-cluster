@@ -25,4 +25,10 @@ metadata:
   name: traefik
   labels:
     name: traefik
-
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnpg-system
+  labels:
+    name: cnpg-system
