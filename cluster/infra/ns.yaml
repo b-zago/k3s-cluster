@@ -32,3 +32,10 @@ metadata:
   name: cnpg-system
   labels:
     name: cnpg-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: atlas-operator
+  labels:
+    name: atlas-operator
