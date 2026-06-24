@@ -1,28 +1,88 @@
 env: prod
-deployments:
+atlasSchema:
+  - name: database-schema
+    runsOn: database-database
+    schemaCMKey: schema.sql
+    schemaCMName: database-config
+    secretKey: url
+    secretName: database-credentials
+configMap:
+  - name: database-config
+    runsOn: database-schema
+    schemas:
+      schema.sql: |
+        CREATE TABLE roles (
+            role_id     SERIAL PRIMARY KEY,
+            role_name   VARCHAR(50) NOT NULL,
+            sleep       BOOLEAN NOT NULL,
+            awake       BOOLEAN NOT NULL,
+            regen       BOOLEAN NOT NULL,
+            update      BOOLEAN NOT NULL,
+            kill        BOOLEAN NOT NULL,
+            summon      BOOLEAN NOT NULL,
+            users       BOOLEAN NOT NULL
+        );
+        
+        CREATE TABLE users (
+            user_id     SERIAL PRIMARY KEY,
+            role_id     INT NOT NULL REFERENCES roles(role_id),
+            user_name   VARCHAR(50) NOT NULL UNIQUE,
+            pass        VARCHAR(255) NOT NULL,
+            hmac_token  VARCHAR(64) NOT NULL
+        );
+        
+        INSERT INTO roles (role_name, sleep, awake, regen, update, kill, summon, users)
+        VALUES
+            ('admin', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+            ('moderator', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
+            ('maintainer',TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE);
+database:
+  - cluster: database-cluster
+    databaseReclaimPolicy: retain
+    name: database-database
+deployment:
+  - component: cache
+    containerPort: 6379
+    image: redis:8-alpine
+    name: redis
+    runsOn: redis
   - component: server
     containerPort: 8080
     envSecretRefs:
-      - web-server-envs
-    image: ghcr.io/b-zago/rikami-api/webserver:2e18436
-    imagePullSecret: ghcr-creds
+      - rikami-api-web-server-envs
+    image: ghcr.io/b-zago/rikami-api/webserver:latest
+    imagePullSecrets: ghcr-creds
     name: web-server
-    runsOn: go
-    serviceAccountName: rikami-service-account
-routes:
-  - host: rikami.zagoapps.com
+    runsOn: golang
+route:
+  - host: rikami-api.zagoapps.com
     name: web-server-route
     runsOn: web-server-service
-secrets:
-  - data:
-      GITHUB_TOKEN: AgBevkBUl7pXVdkjaPgFJBjeITgkFjYfxqyB5tceklZjj+J5hAnaYVhRtiLJyLDrHbDR3/8CUeYqm/TPWhaCXe4kl4hbgqjoh/3s+V6+fKj0hzUjvcCvBePbtA8IXT1DrEflJc6Zc+8c9F8C5EoMXmH/YaZAyWKmu6QqDDHCYgE9VYCZfFzcfyfsb2pvHw7ZyaWi6AwQWqy9AaFf4qTb3QKhwu6d3UHOefUBh421lr+i5syVvuwPBlNFPr2IxuZnbVgbz0n5lLsKqzEGJa0s9kjs0RFWEPfeNNBKVpBGx8+abQvrIQQjgfBTGSUyOnPsrbGxqByO2BY5gNsAA78TEunT0rHpvF5I7h+XeIUPRXE8Uxl+kIgECjHnvSUwKO/2EE6kUVnWMlWMpH2wD/jgbDf63cgZSbPEqSC73ApBjfdtFjK4J/Q3UljNA3WaFxqX2d4QaZ1zMCufbi4vdXmKeEC8Gd8U/MSJ1bWSTOK6pATCTSAYduCnECQ+OH8VQru9/2ZjNrOLD2C1tBozf9Ly4xpjTzstoJQtuodhjgdv132rtrJSOUANd7SwcqWRaY84sDcea22iu6mG4dQMQ5BGhkM41DdHdWBu2IeQczEwfsuS6Qxi/MqiIvmIs4BQgNQsilc3CZR6BCQOOxGwtIvJIZl9ODWwf+lPgJnOwsDIGv4WGPRyzMdchu5REjcKlr1nCwU6H/4pt/12wecQw/VX/OhiRJnV/leQLq8FoUvdTbuROksnpd6DpbxF
-      TOKEN_957543eb60efffbfc85fb2c04a6e3007: AgDQgtacpe1pAOn9E/Ete6tTYdkQL3pymaHjXmYuPq9Eb8GwVczd6Hef4Rn8Ng5AfQgEjwULBbv1ytCYwX52P5VaH/R5tcWNeFuDA6pdboL582LgV9sWEZlKh6bmsST70cR73XkM0v3xGR1FywmPvoSbtdlrGR48jdNO5FBItzRI9zImD8lEGDYbIQUy3bYkk1KKSnmaDEbDBC/kpmc0t7p2yT+GTTfqI20GdxKRRgDTAJkptiKsUhyRXfbF6GBisdfsv3Q9NU6uHOVGIpKUi2yxBkaSpSCaECpudJ7tLsxLaMbVRis9D6/n51XxJ3qcGl9bAKe3HU295T/3wjwgaRoNGrc/c7o1UqPl5HSPkokuk4NRdVRLhiwC74CAc3h5vKUnBrzi761DoXgA1fCD1mOrja+tC/5kjOlumvICZcy8fReOqI3IPb1FccUF7OAESbNJabUT7yYabJB8WWBq22qSiFj3sgJkqpPUCIzAVPvU3aOSvcbEpOB1qZMGv7Xg48ICwfK43Efbz5S1E/fZbMPUX0Bn8JE/jywEKhPRS3joZyUKvFz3cXQePprXAh16B/NFtdOBgAryoTCoXwPSYBl9B/Gu2w2c7cpf23dDbjsuNS2zlsg2VuXeFYspcFrkNQ9Ww598VRxhIkFFb2ouGmbZ15+niyqVNzt2IjgxrsPKb6nvzSJy6aHk1Xz+RmVSUL9RN1y5sgHWLBZnNsW1EnhvRd2/wm/x6oO6yED7TwNUXqs7a2wR4rslEv2m0FFT5oNePTfx/BqIxYsMk8NypWRX
-      USER_957543eb60efffbfc85fb2c04a6e3007: AgCbaUKFVOYDZSHsAJExw6NxYLRFDJjyBTJ77jDA8yql7JQu2O1V0wvMGJPTPPB8AXtQgLi7o4BRye6UNnagGmAujJKPPuPrIb/1mX0Nxx7OEhLRpgeAWQtu9dtURUiX+6bI8tTWScR/h5NMil4CiY/KR20iCtybzdGPEuR3Bci3f6BR1OPgHwVDXG5ff4kWmqI+GNw+zbraD8QAlv/JvgdupFu8vhWFw4jy30v9QM4dYw4DyXhvUI+ZuS/dD2gw+d9xki1Te8xxPZDoSvf3CTuAVpgJ2+/yfhQy2mtZkmixBIBCTRQE3aL1vpYKXPNMI4yJXdKJrF8oYsHO2JFKfz+/IHP8xWgiOrUTVQVEel1IVzukLiOQFEVmzAj1H+2n5MDnJeAUDSXRkjWAZ4SylNT9Zu73FF91UvpKnt964wQidMNq3DFqNP4Gm+Uyp0noi7I7RBl0rNGG84N1AIkKjWDqKN3KahbH1CDqAuWRontH4zRBmEosQKSLvICNyWROP+t9HrVwD4s0oGYobn+w2CDgo1l58bPrxsUy4+m5//dKAaMwkC3UJY2yPA8xLywgqwRzpIEWW+sO5sBkuf48HnI1ic5OwaSV8UFmRBOwGnhtRGmRWy9ZNG0SrVbgI2ubR6XxE2xr9s4Y5hCsnRDLodusgg5Sz5dQOrxax2EljkuabkDEb5DEeENGSUsRZRUl12C1ve025Wo=
+secret:
+  - data: 
+      ADMIN_HMAC: AgAbpnnnTDI0jsAbrzJ2bFZ63pEwxlZvhY4PBDIi5CPrWdv6bIWG2wEWlcklEfJJMNUCqTMNYex2jj0sMP/C0KnX7s2JEzABsMK51xRLlaSESq42ZPQM9egO/0QKy86kfgWTyaogmhxiKH6ikEuVKa7M49AFAhDSydQZpdc6gctXQAohU1z2JWOr2NxtLTt1uHNYdrcKjLJH8wVMqgtAIsqS2FHy9x4nAX0tTpaJhCUU/mtRxVIR9GBSHDUBq0oDyhsezSXaJowGo1AQ7i9Gk7tHCAlxC97lYEI/JH84QnpFpjJi1z7C0aV5w/I+XcJdIuk+AXhEX0PBCedDLVImxM6ZQ9WyD17NgSxhZVi/lDdL7ATSa8uzMHqeJ6J8braqd61eW7XOVS+Hy0OZPs6jmuIrpHf6KXcGVATfconq4exVAwXjXV760oWSjEv5fW4Hgg/a/OtLUZuqfqpz2hdXxgQO4DlPts98jbK4AlVNHB6lToEFErPW4wMAcjqHRoSwhuT1lY8gXLObV6Ta4+zoeNq52OIXqDAotZNp/sclNHNhm1W+2ayKGqW67A13tBv29kB9OqNR7vRe0Z768dPqN3Z5QF4Y49mVVzbMVOrrZxXHDELjBB3U7RYMcV0kulN/Ffr8d7MGAESKKovBTmZ1qIyWAVb3EGz2Fzj0+YGjFTH3obIB2eHvcDRXsPsOTnbuykKb+XmM2F0q/WOL/OpW7ZniH3EeiF0O4gKUXi3p6G41eqebNvNrwY76r0r8/Q==
+      ADMIN_PASSWORD: AgA4Hi7LD/JqbRVq9MNUvIxluVMF9D0sillCENjjuO0nfdHq2Xkn6vTx1v5VxA55oaScqsC0SFLJMB+4nNF8o/BQ6ZFLYlTF3vf8ujVjEMmUmS+XaHf/SLEol/W88rvJ/Q2uocBXsoZNFGC9ZtFbwFt20U3bbxrty/LwF8PK3SSIKj6zIUJzXKPVPccNk/31YXi/qVbmhQ/6weKATpQ2rhQOVdr25JkbLgAaLTzyoRmq3fY/Qkt/eZ0jZvwna1wIhxH0J8DHFkSfA9El4IbyV0RaywW0SbpU97xsv4HxnlyL85zdLX0lCyMRhEuOuHXWX3gHVHg5IGgnTEbezASvaVwZy36nuDHU58HiAEsIUC5l/jPEuCycFIKBi+vu+LehidH5lbhNHOPyuRpeXm063gEWWHJ+BqpH4DlgnUMh9JVOnfowAaI7e/rRss4clSr+4rFFmoeS7qfPnQ5ABTQi2pTPnX7joZ23f3gHdEBTJRlF0YbSrgvMWF1Puv75xZ1cfJN1Qz5Gek6KL1waSHyhhifPTNW5qN99usCrGy2dA1WLlAZ72KxQAUrRgEfiqaFWLBKb6WqNUps2w1Hm+fpFryAHpvKVKEZe7Efhp3Dh0xb8voFqDYRbP7Jzbx4iZPCE+AW1d6eHJug5Pzol9YDe7IliC083KeCvk3h2q0lbTWKPdDrF84DPsDxwWgqovFT3412wQi5p9qNa
+      ADMIN_USER: AgCwWH9quhC8VZWA+OQ42RoeUTKB0LSb+5IfcGd9ptF/Pm01TUmoi+KmH34Yp+QjR2M1Q+RYWFhUL515NnxsLTio6fecgQCdXP9e2FX9c/hmFFYeB15+eTq6nxCdbPjDPzr9tQW7uTD4g8pFP2nEcI2cFJrVOSwkqyyRkJbsodUYUMDJPON4NfQ7SEFdENYM0M5Kedfyh1BNyQOheuQN2SPU/C4ctFTYQ3AsPUOjYzRisySku8vAXpk/QZU/HdfgXUlZJhzdcNiuHYanLV5AJWjvloT5ZExVLzh2xlBAFS1eeSRCCAJKjuSgHDiHZ3bvR4m6E//+UAKSiR+VXk3lWqpc5Mf5JhqvPUk/OLbgm0uiHN5XxtOAmonepCM7Um5BZpq+Y5JPOKquktizSyyiWxchpO1X2xgzqSjG3lT+x2A90+mM6O6M8+kSvZricdvp5KK9NBvzagN3kFGJGkBt0x0LoRRVgWwCmAzDRFaaz0SuqEUFQhHDrrRr/9r9Vl0zuUMVqT+nnTTBD0s6aURREZ3d+cdhE/wv/2EaMV/Lg5eWFHvCfjswbj2dyH0cm456ubjceeTxvQO0d9I6t8iG//fZYUuHYeBSvWA2HIe4r5gpN811oEyl1p9iV/kmICavu8oM/ym7O3Af/oclnF8qbNXwpnP6tBtLoEejgZgoXJUoj3YYMdjsajV+8pUXOgDWtSp3omoJ
+      POSTGRES_DB: AgC48JTwEr443RAolRTFx8MrPMUgP4d7mGY5+4TFuNs4NoNWUcB3pSyaRfYYCdgpqUAqsnm98vxgeZ/FPp7+eKCgswjtZl9XhvNnd8bBgusZE8rl+YsYVE7/dQcJqiKr5mpXHq3JuEvDuVfthQweEwESMNI2MaryAnCOSvQR4IXy85YI8YDBC4CswLtdRXboHcd0KxIa0gk8xnjB133gbjlPFjwu+x/WJQkqHx3Hl9mgvDfhky3E4fGLkPRw6NvbJCCrYlfQ+symaE6eDCsUBnew/sTvDcqjRzfZRYhqz3XlMuYktJ2uLeF2pFwCLEdrh5QKssEnZWfxz/q2opRnwMfqx6y9IpFc4rSmZ5uZLzoC6oJdoyjcx44TEMDsKjqS93Acd/fNQ1jho1QjghsxpuQ04nnXRu223DK16qP8jgyulTL9Xvdnj46vY0gN0ThM/ByR9bDPKrxs/oVDzFPHvUe7eIBunl8x+WE0kGOw6vO9zgY47CLOTQR+LaSBuHcNzWmVU9ptzyVZ4tjf1MKGPNJyFuSiPfdIPJsynPthrWqYxUwNBGgKSRGmFgRp+0QPOJeg4JIQLM0bPecHa3uKpO73IQulfTXEzO1P3fF7Ir9ufgaBgeh1cY/UmnZPeQMjLg3VKBZTqD/hyMB9T4NCcu+Ddhuf0KKYN3OuUcz/Wo27cYjmRNWccc/gdvV68Yjoh3yMcyrC5pp9grNrgFbzfHIAmNVe
+      POSTGRES_HOST: AgBBlHrnUu/0tsuCOnxSpc30PvEOPGRvUi2KQp64FslpePAkebhp84n5nE+8GVkNAnIr0QDO+bdwE50ChJhUIOna5YQHMbIXAJcLeir4wpE8cGwUECCUJ8vUvc4J9zDOPsfaf6xj+JEEyJH4WQj4bETPYOpT3s8zQVxChCMYGpiuBrnPIjINJ5Lhy3dsouTcyk/W5Z3TPV7k2kMk6IBYSn4CqQ3EQCioIn8RTrBTQncomGYoRIwmHGsyyBEaCwygrrRB1zbhjVvglo4Ixa5ay7hChH4YqmN8wX1CIeyANNjrTK2XvKwhq6G5Jb0O4FdUvbheZ9S7jwxkiRAdB+4UfQ5XkHuqIm+3GEiGLEwpWv0427K3Cbp4oRg7A9aUWgnP+ts3K665JFvbNvRetCCiLfDKoeZyNbtzogBtLgcASLRap7FfAyidB18aigctyHSJ3meAL2PRsWrpAhlskipsTbcpMX+vPWFq6p5yecW2VL9TPRuFZH815IsxXcUA6zrhZy0B3OnUFv2XstXMLpCQiQoiRjmRIR+QPSs3DaVnVZFOxD/eIEQ5ED2MOTp6x97wdzhyWqbr86+/aNkrfYX77eREbq5bfTyAaH9w6Uackr+fWFJ1hrQ9usIZWIElOjSUXDxHipfUh6m6khYPRKZafJc4dgIKZ+3lGwyR+q+wZa0VCTW/GHeqY+JqV/OAjKOvJYaxqsqkJQ3LvjsqUwm2AxV/gbM=
+      POSTGRES_PASSWORD: AgCnbplxhunoaDafb201hpiVqPLsF/q2jqLg8AWlFNUHBOynGk023AWppYoacZ0Hz+hydA7V4g2wgJ6XLhALf5eqVSxK4BZlwsJeP627MPDa9yuUawX+E9kjtBpeonX4Xqi5GuhQdvYx5U116AkpE0i9ajLYDavw7OcYGkAHw5qmJpnrIobFwfZ2SEYQFpul5HCB+yoaS6teNXhfWThdJFQNIZSyZnqXdxNgPfcSZkhiZAwpnzXChRn/o0ybRUU0Qv0wOph8i4qDYNXpsKjdo1Bu03kE5IP5m4BEHvJmsvKWSXP5Gx9sHNC6X2NjpIZZOwkM5kqmVEv6jtmdA2NKqDM6EqCWa5Wj51uoBCisAAQjS/7Ypn0FSmO+OQl9XhWPFnz3AFE7nrnhdHKdIuxBmIY6lKzIs6Hm7kAscdyqqbth+0o7VgTEo5363wYBNCNQpd/HRnvLCP08s5GPsTlpslo9jrKLOs3mkg0lLZukcti6nhCMhuVFpOKxv05bcSNG0+uaLAQUFCDS0EZ0BMd7g+/lEL8B4UEyG/2RpWNbCFXMAmRsquOU102VF2a+xgoIqwMBsE4J9gSFwaeT8DVwwefSqVbTLdXT54lM8xchOcAFVC6jC1NdzxKFvszh+4k86FbEPdnXdmn92pHWZ9O2OIWbzELrZNk02/U7oJOCCvOr/1gnq9Cz+A+GRfKSpWZKrUpPn7976GRT4USbSBXmWUHS2CJv+iS9L4ypIBF6psbTlJ7CzFFD69HfDanbeg==
+      POSTGRES_USER: AgCZW3Re8NeZfxh8vBztkFJCQdsyoUiHgDlfwTBvNJ448fwLV6AliuuuiaZTt9n8LIdNJ9o2xr3pAn9Yz0ZveVc/YKKK6PNyC/aNWgQPsCFSiv/L/d4vX01AD6ViH0qXPSAEKeHGEBBSQlh4BBNEVd1eKQlcbGD06syuEnLj9OdK+h/8ao6GYYgIDPenU16XG5UKnKDRg4W49QSa9Q0xRmBpMJOTY7mBlkkvslSB/zEWdxIGrCqAIRc7nna+GRvId2KqPCeMqISLqCNWgzbNl687n1NpXwHNTBMsqhnz1+iQQ0ZK8e4lf19h2Qxepa7oklZ6DZCRafHay9RgT2th2zbDL27Nh6US29q/ORf7LjCk3BtVLazqsGJhCPx7CtNuUK2vVta6z9IoJOqtbaiVBt0vskT9kGh7kassZuSW1WjhxYGiDxlTPGHK+U2IwrUoyUovYgUv4p9DUjfspj2JJ8KmXT0fPemUI8pnGM7y+ZPGPmv5KK39jRU6fXjA0nbJh32vbdr/s+J1Fq7W1Poy2OFcndpfxVmNaJgwDi/84q4T6iv0NKprZNgEBFIjW2fiTW6y61Pw39YOjn6UljdRe5I4NwYjMMVxIqkxBWSbW9AiQXVNaE1qV1dvHVNzGwQEut2i5ZxoDPWKz1CSeAeDVMSVs9yJ29br2JqVj21t5lSuwaa++uaKku4pQsVfEDZDdsjGwrAoF7E=
+      REDIS_HOST: AgCE6BYDiAZco16rSMQlQ6eyp7T3EhTV1IABlm2gaYltgs2DS15+gHcJ5z1OsY4L6A48W/rQQCZ9fU+FJzdMTIzZ7W6QegoaSZtjdyZYiNqPIaLVVDFjCuyK0gms+9JxGoFfNAG2Xobrnoectxq+rGv7ycogCP6cW5JO+9zesLDldNu354rMvnFB46s3I1Kwo0dzL7GyyoQaCe6eEcuPLsDN+6ezzrGL20U/cIJP6EIhmxH8HpgE7xiLAkr1j5mBwraUVz/elDYT1huli+uTck3nEw6+Eeh6d+4caX9VxUcofv08x0Z03ySxTsKB7yzFXU4/+VXF1U5lDPMQS25MuVhKR7QrDVDmFrU44MxyQPfeIsb33zXZ4GE03yalN8/DZwS4c7Mu0yy1quwEGomVy/xHkCfHY1H++qr6o7vH0skiau82QCoarHvO4kIi9DIfrC/tzhbtXo3ZkPHd7RSF8gqM3E7e06g4//+ns3kBmmtAcbbQTwNny8zAYaf8g0aATg/ae5MvDjax5boZfb+mco4gp2fKEKKd0OV4umQ2++0Wmph+MejPeKUzi2DomV4TlpeInsElgiBvaa+NimUIQvUrpfOs3MvLtbKAyX6co/XBl/lnvAdOt9qUD0g/Hp4sG0BM+ArWJxxiZnxWo1c4vK7+B4CioQ+ywJaXLfwl4UIXGKWehM5qapN8zYN0VrrHhg8vttS4Y+0K1E7p3VoLjoukbRxjhKVDpkA=
     name: web-server-envs
     runsOn: web-server
     runsOnList:
       - web-server
-services:
+  - data:
+      url: AgDTONPhm8qncdQw1rUxkkTZbCEJBsgetgu4h9z1g6DPAtn1NFS/GnDM1+y4wOk8VwenMHETMmKpLqZmGK0lkTVtuoFZtBnHkoTSg4M8zF7CpuDke6vxhIbaGhdhTvFTgw2G76SJx/nGIApXq99QmPTmncbGXk1KpU/+tJa/WiE7xGxkRq5wnbPtaxau0YtTZz6pxgrcPcLOv68Gk/qdkMHbcwMK2ndrJkwzWz4LNMgR1uhGvHqm3aqDv0Mh4DcMA2AkmuJ4IYtvuyszCs3ruQSN+ZEkMFzPymGrZgIaZOyeUNoaQZvHjwXPaIkS5SceOdbnbtpk9pyS6u6bPE2pq/edeh/lG4Me3oJla0gvEb4bCISVDyPe/hfC0mWUYB02jwjyIRgHglwjIa252oH7tvtyg1DPuGguJ3cSYMzFB1uDWN5JMmywy+WGZ0HtTenrXfco05nSRCBiZmMuR2ZMX2OaD00eS29X+a67RefqnJ6VvCLGqQCQ8UwW3SYgx65Ndf0cfPJMlYmdYEtikwtQBj+f88J87f8KFevAj1IZACIug6ho7p0y7REZpFUnj03dFd2peHHx5jjwaeVYsDaEi2XCrxNKHjOYnk0thMvZl4XwDiF+1t0Gvq1vYvQoxfWS4ZDrW0KJYz81Ym9JjYEUD8sUohHhHjv75lbv5NeDYCItTTWI174UgCA/homFk6whurhTP7zDBmUHD1qtVLeIHZJL8MnUBWgt7p0o8tBL0COU825EwFnaqnP9IZ6isBsl4c7naCybkwUx4qE2/G/NMwfGa9jJzu++L32BJoHnfnQzgF7dtWz4sbuCxCPqplW0WKUms86l5AUVxSfcZysNWCrcdbKwoXcGpyad8bHFiww=
+    name: database-credentials
+    runsOn: database-schema
+    runsOnList:
+      - database-schema
+service:
+  - name: redis-service
+    port: 6379
+    runsOn: redis
+    targetPort: 6379
   - name: web-server-service
     port: 80
     runsOn: web-server
