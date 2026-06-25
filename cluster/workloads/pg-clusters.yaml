@@ -6,7 +6,7 @@ metadata:
 spec:
   managed:
     roles:
-      - name: rikami
+      - name: rikami-api-prod
         ensure: present
         login: true
         superuser: false
@@ -24,7 +24,7 @@ metadata:
 spec:
   managed:
     roles:
-      - name: rikami
+      - name: rikami-api-staging
         ensure: present
         login: true
         superuser: false
