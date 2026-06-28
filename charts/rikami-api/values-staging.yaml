@@ -45,7 +45,7 @@ deployment:
     containerPort: 8080
     envSecretRefs:
       - web-server-envs
-    image: ghcr.io/b-zago/rikami-api/webserver:08c3223
+    image: ghcr.io/b-zago/rikami-api/webserver:af4e2b1
     imagePullSecrets: ghcr-creds
     name: web-server
     runsOn: golang
