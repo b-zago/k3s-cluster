@@ -1,7 +1,7 @@
-{{- include "lib.atlasSchema" . -}}
 {{- include "lib.database" . -}}
+{{- include "lib.service" . -}}
 {{- include "lib.secret" . -}}
 {{- include "lib.route" . -}}
 {{- include "lib.deployment" . -}}
-{{- include "lib.service" . -}}
 {{- include "lib.configMap" . -}}
+{{- include "lib.atlasSchema" . -}}
