@@ -1,8 +1,8 @@
-{{- include "lib.secret" . -}}
-{{- include "lib.database" . -}}
-{{- include "lib.configMap" . -}}
-{{- include "lib.seedPgJob" . -}}
 {{- include "lib.atlasSchema" . -}}
-{{- include "lib.route" . -}}
 {{- include "lib.service" . -}}
+{{- include "lib.secret" . -}}
+{{- include "lib.route" . -}}
 {{- include "lib.deployment" . -}}
+{{- include "lib.configMap" . -}}
+{{- include "lib.database" . -}}
+{{- include "lib.seedPgJob" . -}}
