@@ -7,4 +7,4 @@ version: "0.1.0"
 dependencies:
   - name: rikami
     repository: oci://ghcr.io/b-zago/rikami-charts
-    version: "0.2.11"
+    version: "0.2.12"
