@@ -1,1 +1,32 @@
 env: staging
+deployment:
+  - component: server
+    containerPort: 8000
+    env: 
+      - name: ENV1
+        value: envir_value_1
+      - name: ENV2
+        value: "2"
+    envSecretRefs:
+      - web-server-envs
+    image: ghcr.io/b-zago/simple-test-api/webserver:1.0.6
+    imagePullSecrets: ghcr-creds
+    name: web-server
+    runsOn: python:3.14.6
+route:
+  - host: simple-test-api-staging.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
+secret:
+  - data: 
+      SECRET1: AgA0PkiDVDJVCFOlm6RTHX7VEsZkAli/O16jMCVuQ9KktmlbPKxGHcMNdHOpu2WZbwG34KyN15fKp8S77gv8QwmCQZMfqxx8oVJtdv0i9mgBzlhEqCMC76Qkq2N/VFz2rBSxqtMkQBADCzBwq9T7YastWb/ipY+rbUD6yOJvKW4BLlNVfVIks1WCPBfEkvh3qkXH1Uuo4KF6cETnFUzfVa2hRbmv4J1cMEUauRXBCHrQeqD6V5ATMskH4pyCWsSAsM6WtLFXW6xljqQid4XPEMcgRR/waECrjHyUNnnaEBBGlzBQvxNtTRjZRGYlht/zf/7cI5m41e81tbqOgCHzyQZPvdwJCKSppw8/0/j1sNn2POe7ROlgcpiIrvYF3/DVZ5m2b2ut0tfDw17RkXgGsCgjthppW1xPwcVBi3EgM/oXRAfGx+9Y5ZMh3WJnIlBW1FxdzZ79l4sRV41GAqBnsbGL8XrA0wAorlmJSx9RiHzzFYhy3UFs0RmxxMtGWgkDim8HeTX/G32Ib1BzQ2zV9omGqYQm5D06H+vuBWN0nsSRbDkLnD3oWRBs/yM37GwnsxuBB0EcPwPKQc5CWdW2EZaVRfa8S2C6KBmTD1VLrHyjW20eilmHJ6Hx10mqL14R8zHzyQ9YIzNYa85bUs3UYR2lz8rVfmkyzxqx3lDBCR+qVjNLO02IlcTH1fjAsUTdcmy6n/p46RZAfjLQxA==
+      SECRET2: AgCUKLeYDRqzVLoyrEBCrlUSXMm2pGu08FkgpBKuSKye5ixN37qkZdsZoFdDbeHyRxziWWhk/bb2OLWd/mY4FkWVS+UUtBKR+Xt1Hc1LqWvLDz6t3SQgZb1J/hF0bl3EDa1x28m9ON3fWwyLVRXzCp7hA3m2kpGDs9hiWASUdRGZipcMzax9IxiiayKXoVmfXPTckTwZohsy+RvgSqne++hlNHVr/MEilrtnkmKFuuqWI+PZIoulT/Kq5NggK9fD6XqrCejznhA+3tgZ0AsEJ4GooDkrhZilTCgiRweSH8h3efhNhJY1iFVWfIAl2ewmdam/BVHD/ptNv0FdOMDQ92dpv2siz+WuXFJXy9SFBFyAGHRU02ZSsHsv4rrB/lD30AMxs4e3w7dx0hG3n2GqOZ4DrIpeBDnl9f0ZGbYGlrcfKku4S6X/cy8HqA4cc4TU3lFPJOI3YjwsRtoFZB1dG5AGwMVqU9fOLcCvStyNbdOZ19wPAfhU5RFtCLfxnyYXp+xgvOklNYcnZ1lNbcyyHVlH9gMgVpDkVn/rwlS8LxVU8yyhyHpKLxwZl4RebdWqERB0nM4XKzZu4W8s60NZUR65/xvPNn6x85N19hzSKUsm68eLl79rNwE0HKEYNa80lPma7nEeKKz7EEsrODxa5U4eE1EU+qKH0oZV9859M/A6LACutQnZLbPaN5S7gCICKqOeqWLda59VxRgsJfMB8qo=
+    name: web-server-envs
+    runsOn: web-server
+    runsOnList:
+      - web-server
+service:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8000

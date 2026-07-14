@@ -1,1 +1,32 @@
-env:
+env: prod
+deployment:
+  - component: server
+    containerPort: 8000
+    env: 
+      - name: ENV1
+        value: envir_value_1
+      - name: ENV2
+        value: "2"
+    envSecretRefs:
+      - web-server-envs
+    image: ghcr.io/b-zago/simple-test-api/webserver:1.0.6
+    imagePullSecrets: ghcr-creds
+    name: web-server
+    runsOn: python:3.14.6
+route:
+  - host: simple-test-api.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
+secret:
+  - data: 
+      SECRET1: AgDM3qnC2MiF/uq5TPvvMEV2qVZgZdERlAkA2Aby0iqSopgeDLV3R1Drfs1v2Yn/kHwdjOfRdIJpy7BiwY4zKtioj4juDpNiVZj16GPa29JxjayILtRpuj/CUpJR2Kkb4pTCTGzlcPm7/2ve/wjQjW8TU/TiQBgUvur2cBiG+PbEdcsF3J4wvMQgWu+SOeTJKLKfkhJ4bL/mAPvICtd3kJgMDyq5gH8uTkujUU25/C0HlmlwgXiAJmGdnpRX6QCuyY9zhmkPE/uq9tEfvftU919/u3OJpA3W7jaqbJQgzbB+1w64ZxsvGPO12+y942GOO801wv63piEoQS+DxA3hc+RDKAtnSG9kp1twc4XAMBUoVYrLVRAAUREgj1IZwUWabvUeuxRiKI9Hd3eHcpGJZ38FcrTe1ohS7yQmLJSncQfCpQJpHJbJ7PX8LlKR6KOMfI9zH1OtazDEMmnI8sbHmhDff2o3EgleGPe9MtnTV4K+nvMMSG/deQ+Z7IjWiS0aeaWlWRyIS//9S+0IHM0ViFhpcRdj+gAuTUo7Ui+qdPkcwexRNONpc4Rc9fEpRhJExQvFJU/LtX/GD9YKbH2Mt7MSfj5uty60mcfF+R0odNdhlHu0P8gxAtvIClZvrGsf8OvyapPHL6RaPczJ55IkOU9YWR3b1wpmvfUaE3arauFuAytNoKD4bc1+nY5kxmnf/MvXjvhoTPGtf2UEtQ==
+      SECRET2: AgBap01QZnhEU8tsDn0wxXJWnaV2dWJVxRJcAM0PACVhy/lT+mtCf7tEen7Dm5N2E4znlgUSTebwO0wuqtAE834E3FE4vdhFqt5QVukiEe/JxwdTuF2DBsWv8IyUA1yjKUydnDoqMtD3SOBpxBFmQM9r6IjH7P6DpuSd+ESjMQI8wpDYYziP/fECVQWoLH6/cwHzdsv3AsR3cp3iUp2LPDxFgx+46CiKs3mJ+rQOVYv5FVcoPJarPeRkjWN26WcWRPOPWiWXID+28uxB9gTT97EzHoTE4NhNbuA0M3VNQJOHaGJzpyN8K1BhlukiH4UlyLEpJgpUGBuFigWEvQJibkfCCeIrEWF7/v42bYH7qa9iZQzKScCRQksOZYjrj8rvPMTZQzMO4tao6GEB2KvbMfjx65IN5JKZ+fACG3Aqls3apX5etbl64aVNlzSzlah88WJAUNkC978Vy3bXGny10KyppwGioMA0HpdaLRYJWZ/wxFVqNjRo28ijzXGYLuqxXep3lUg0eGUUg61SLaDN8FMLGxqJ+4cDNVKgmRZJ981L0+9RFlq+0GSkhkLs/GJzWyY49G3ltEAZTOJ5WU3g3VBUwdV2+JHCzSXdtdX0XMYn3ZOCoqhHbMHuieLHRWI+eIZPxFO3X8U/qHCul5BnhKuEvTqIP1JugYQWiAv+yFAGhJE5xIvggOXhF/sjmkxekWq46aML3EAwJ86JRtamdqw=
+    name: web-server-envs
+    runsOn: web-server
+    runsOnList:
+      - web-server
+service:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8000
