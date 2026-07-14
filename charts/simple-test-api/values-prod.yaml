@@ -1,32 +1,32 @@
-env:
+env: prod
 deployment:
-  - component:
-    containerPort:
-    env:
-      - name:
-        value:
-      - name:
-        value:
+  - component: server
+    containerPort: 8000
     envSecretRefs:
       - web-server-envs
-    image:
-    imagePullSecrets:
-    name:
-    runsOn:
+    envVars: 
+      - name: ENV1
+        value: envir_value_1
+      - name: ENV2
+        value: "2"
+    image: ghcr.io/b-zago/simple-test-api/webserver:1.0.8
+    imagePullSecrets: ghcr-creds
+    name: web-server
+    runsOn: python
 route:
-  - host:
-    name:
-    runsOn:
+  - host: simple-test-api.zagoapps.com
+    name: web-server-route
+    runsOn: web-server-service
 secret:
-  - data:
-      SECRET1:
-      SECRET2:
-    name:
-    runsOn:
+  - data: 
+      SECRET1: AgC3h7pwv6U55bbjUWWxOw5y5Snh3jMxcNC0KOlpL3XTD2I/GhSLe6p+StsghiKIQXZ5tQGlQu1Nk0UCxpkoEKei+r4+PgMj/ZKmholIGuzQ5EBF4PE539KqoHtbs0JxSxUwU/Zg5TPFwuxjL1LzohYmRj/9S2kPJ1idbebbP+WUDrGoSMFjub0RfL3f9Q2ZAgnjlqEi1OUrpt0YS00KIWVNjANbdqP+dyfqJDVaiuA8V9V4oDSENcPFiGsQvKfY50QECqj5PvarGZUiiuEU8YWgJEyNYBhFUBHlJ8gnP73CVAnjTA48/Knm17y4u5tb9M/n2qRfdiKXFgzMiNID42fyPI9M0X341J06qLJgIhNTBGriNwDv/hTk3sf4HHhp2aUhRkcsBQlrpQNBVMl1UMpT4Cd+nydR1TA1okrTagP+naYlet+RNacFIHFnMJX+MN+BnuHr5w5SM+gLytydKrc4U7qC9m2kUTK7pkg2RphrfYOxjtgk/E3nvdlw9Y3SoAMkE/eFhOCvjH4LaDbtikNHkpLczZAI8CCVcS+/0NSRzj46L0jSxcklPZG1iNV3sH2V2eKyaQurotce3RcNtnzN/I25zYRA0UyxAkVma5kUr80hnWU/lGQVBAxtQUIrJcaKQLTpwBaVKEJ3yRv6uQ6khItQdgHaoK/BIpsWNUr15x+ZKoUiwTxn7zb49g/qn15NF753m4Q5WwwMoQ==
+      SECRET2: AgDCGK7WHMVunl/rmVrUWcc/NBOO4hrPNACeo0vLhS3VhJii2WYc5TJHDoApAiTo10tugXovESr7gnZVgr3+RveZ7yN2kI1LFDQUCSp6HqDvtbx6BF08qREsv9+kDOeM3fP4zhdFNHEFt+NXXQH86XxCutSEugMaoGDYaOkNRYE/q30wbLe6fkeEOHPSZmR+A8jGAs8UbaIkETLx4vYTr/pxQAyH6OW/hnXqwdmadUR2TghDuYnMEYFTKwM6gyj14CkY5ItuPh61Gbc8T/kPEnFd4T8XT5j9OOvIBVJAC4irtjIsfqOp3bQMZt8KKXTAR3A7oyaZ22btR5HtvN4WXd5zU4TrZ+GfVPOWHzrQ6nK+juacnlD+OgfPcmP1LhNIcJzvUyCU2Hi7/L+NKnt+mCYdBH9BYXhXjWgpfB5iyiFBtIAjFxW05Z6+agfsWoupZRfjEVSxf83jXCDLg0jceRbOmGYmYMS3BoZppA63TjOaCEKwQqhwGKx3UimyJW9MUEXcrGo+PRgWFIbBfsBtpH647CDldDPGetEv1F4BjFv15kApFOvqsXdwaorRA8OVLhQCYrXZ9NEdWidI8v/wZwmYEYImf2+ZPnTRPx9Zw/l8C3kac5LNEZ9YUiUWsCcJ5hBfKytMQNUFLNNNH+hyLut6uKONGEp6VP/IAtV+OaEs1X/p797inPseY/AtixzgV/A1Gy12OYj/hwu09QLn+ZU=
+    name: web-server-envs
+    runsOn: web-server
     runsOnList:
       - web-server
 service:
-  - name:
-    port:
-    runsOn:
-    targetPort:
+  - name: web-server-service
+    port: 80
+    runsOn: web-server
+    targetPort: 8000

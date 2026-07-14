@@ -2,14 +2,14 @@ env: staging
 deployment:
   - component: server
     containerPort: 8000
-    env: 
+    envSecretRefs:
+      - web-server-envs
+    envVars: 
       - name: ENV1
         value: envir_value_1
       - name: ENV2
         value: "2"
-    envSecretRefs:
-      - web-server-envs
-    image: ghcr.io/b-zago/simple-test-api/webserver:1.0.7
+    image: ghcr.io/b-zago/simple-test-api/webserver:1.0.8
     imagePullSecrets: ghcr-creds
     name: web-server
     runsOn: python
@@ -19,8 +19,8 @@ route:
     runsOn: web-server-service
 secret:
   - data: 
-      SECRET1: AgAw7n1b5ANlPf8tA+9fR+oEfCJdpzqKj7E7b1f47qC7EIb7A2nnDD1humfQvFIpwCnASEPshnHD/mF5hKYgg0SRYIBaD/t8Z0frmNRH/J55WjiahzEqg56edyowYlvTRW7dS0b/w0hg5ZmcYjskxZD49820VIwJG3rpWKtR8IRlDw7jRc/vyHNpF3Ulp4n2RqLSBXKzpbzW6vo/WBmEm67ku6bGPbzlv52SWOUkIqUIq/lQOj3+v+Uq2X+r6Ukksjt2my7wbqU4l4qWs8d4HAoyjjWJc7KMxcYvXNjcU/jMajTi1tWRl1uSz3IMb4ZPYxCQsnC3d1hkaFa5FpQzClIg1M5y5XPelClV1MATRe9+NmGkMr1foHMNqOZE/PAScoRPfgbHJ2XJvF1DY/5vkot8319HhBGFP2GMRDegG6RXvCx5HRhk1YBJPpIjTCEMkELTaC9ZEfg3S6ratNbCVwa1wyY3uMcOAId/ZDrtvn/8MGnjsu0MCKJm1dJNimkBk9puhZOVNqwT3BxttKmHjTEbmHnomwg0rWUWqq7iQwvpmEgWRkwNUAXibz/qbgrMT8Bi2tJpKfqNRsaeMecD0QrAGPFnnZiBqXqVHfBbCoIkB/5SUtMKnQDHMN6ce3HbG+NI5MDbUV5neLrhk3HNDuwyzk1b8HAVGBNjNJM3Uyoj1L9KdaJPLvuzzdu+q1yL/1xYYSA9seWaSuzB1Q==
-      SECRET2: AgBmSdNF4ezC8hm3yWRTNGPp/qYygGWKIN5eNdirgUkSeVRCNYDPdY78zhZWqH0TJkF6PCfsHhGpDqglJ41M3lTO1p7tIl/ZrH+6rrfpFslYbK9REsroVuwNUuK2dkc8PDKvXak2u5h5KmbmKQDibkl1KcrjMsGWUpgHjwSlqihJLbeIApS1WMXwKJ/YYmW0LPR3aBBl6DwQhp3wkuoeD61zK9LFvDGkKAiBJ//fC0kPzme1ygAST4BSrH6VqQeymSuNHEYeLCE6kzxjQL4xNaoTbSaEU/uSt6t5BiEdsZvnbonIgiRVzIZtxXy6Iss6GWjmNYaFKZILgrPtGfGquLmCqQGC47vIpNOUsO6uJvlNddyaI4NQCfxRUTC5NPq4iVGoINtLEdjKrd9UOWTnmM7U0u4qlUXuilUOo0sMsuJwyVUjLVmNd1QQtABMFJd+GLaB173biFii00AbiQScwPjRV3FJfNL9Gw/J7rTkS11cMF6OF8Z0qSY0nNp5ZBo07WmUDoHfqX5DSal8bvJlWwF/NYJ1g7kI+XKRAQErMzNw3zUohFNEbnwG+Wk/lMR9db/FNmKDeZnsE7/zYCECEHg+H2Vwrfa4CLRL4ZJMM1WP5kFPSxk0rhs538X3KF2OfdLk6VzjN0E4dBROY0yr23lCexESe6XIGZ9hKSiPAtASomPtvExgZ47Gai/ehyIfAa6yqkc8MoS0OL/tuehosj4=
+      SECRET1: AgAApPBv/SXhaZOmzyYVgMTIGsykPyST1XtPR3ewAR2dMyB5zpB3vb/v/O6JddmuQGaw2eZPv+rbbN5uFoCim0a7VpNhTT4EUdh0CdsZykb0fyD4mfblO6T2PtTeRvnI02EU9SzONgmXRNILqqV+qxY6ZgfMwUuolVQHk9BjG0CJ0vhdztdjOiD1AbFLcoL9CupHvmagSURV49+B3+SyrtPKHvcSbxbY31yJxB0x+xkNz9PvfLtVF02GAZsykztiVCRiZgUkq551ORvWZeBhVsJF+QgmpaRwHswXZquFkbTPgy0fq4k4nQjraFFWkjRdTq3U+qq2NNcwY57o5rw7znRAz/++vU5bF8anesP7Zbrqoscqo7SdOSRn7lt792fGVHuWaSHKFjVNQsxOWAMtksOoMbKprOliba3BrrMQcdd12hBHm+3tZG4ouPLTSy6dchczuUbF5ADZyhP10KVxPLYn2nB6B30JvnmSXBtrH5r1t6AKgrv0HUVFNj/+Ve9bwf7H4DSmbMw2RG9IKU2DHCctJQX+qg6bKSOQ1uoUZnobli76R7AGUHiLv09YkC+GoGki2AtFNowMBK4F872EcUEDMW4EdxzVA2CstXdC+GlyoTr/nHvzVG3f3m+3odrm7hKebyQRLtO65Yzm3qggFZh9S43l24NmEJKIMieyTCV0GXdtlkAY9oJjjwcNDn0iHP2kR08I/xk4QAtkWQ==
+      SECRET2: AgC+z7T+oxTgkA/BreUOwAlGzixNhXoBjRKdr7YPqcMAqclEO7Wjm5g34oj53OIGNC7X94W33yrR32D4WG7enJwSBxpQ44wZxulcpYzf5hWQdWDt6iMtm184CU1Gd9Eqr/xFG6THcjwI4Yq4QDyfsxNTTCjJ8hTcKC+Yj9c8ailZp6T0VZIxkxs++NlMvIANZLdZRlo3pXYLEke7OPPX2RN6Rot3iLy36JwMbmETqeS+ecKxRMekElnLEi64LSputkHVvKq8Gmz/CDNzjad9kSQzH0bVnmUcmE8YasuAxXBzdhd7x8KMFv9C5FK/O0f6PIkl3qEhlrFvnyh5S1Xg2a4XIzcgxacqXDM2Oc7M6x5Z4O2B+CFJley9nY7zQW35Hgde6ZjMcdwKpxiiJsBM0Ji7LURlUYyR+O/4qzCVKuHzcT/L2ikiFVT4ZVDBWO6WbX/bftMnxnNk9q1yE6NmjqPQ/ysIilIUxp5WhF9bCfzqZnpYsy4U4ZfVU2h1e2aFNVRmOU6k4gVl8MkjHmIDK8fLkf/C/gH/Wuulgaof1VSJVhUZGuAa7i4YIBgGuI5tUQZlWNe9AU1sOIf7M2mbTPtg8nhRCueunbmCIH3TaPW6b0UrZpWRQf24HCdecOeexN9OG6EbpnftIvuxzktbACXPnunq7MbRReX5obc9Q2RDBIgLp97N6oqcenfOHJwrdDRPcSJ7LrkI1eUA7R0noR4=
     name: web-server-envs
     runsOn: web-server
     runsOnList:
